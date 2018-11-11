@@ -3,7 +3,7 @@
 
 ## Instalation
 
-1. Make sure you have Node.js installed on your machine.
+1. Make sure you have (Node.js)[https://nodejs.org] and (npm)[https://www.npmjs.com/] installed on your machine.
 
 2. Install the Reactivehub CLI tools.
 
