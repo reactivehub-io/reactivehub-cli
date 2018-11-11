@@ -38,6 +38,20 @@ Command | Description
 **deploy** | Deploy all events to your **Reactivehub namespace API**.
 **test** | Test your event YAML config.
 
+## Action Commands
+
+Check the [action documentation page](https://docs.reactivehub.io/guide/cloud-services-integration) to view all available commands.
+
+* [Amazon Web Services](https://docs.reactivehub.io/guide/cloud-services-integration/amazon-web-services)
+* [Google Cloud Platform](https://docs.reactivehub.io/guide/cloud-services-integration/google-cloud-platform)
+* [Custom and thrid party APIs](https://docs.reactivehub.io/guide/cloud-services-integration/custom-apis)
+* [MySQL](https://docs.reactivehub.io/guide/cloud-services-integration/mysql)
+* [PostgreSQL](https://docs.reactivehub.io/guide/cloud-services-integration/postgresql)
+* [Redis](https://docs.reactivehub.io/guide/cloud-services-integration/redis)
+* [Slack](https://docs.reactivehub.io/guide/cloud-services-integration/slack)
+* [MailChimp](https://docs.reactivehub.io/guide/cloud-services-integration/mailchimp)
+
+
 ## Deploy
 
 All events are deployed under your namespace (**{namespace}.reactivehub.io/events**), the `rhub deploy` command will check and send to our servers all the YAML configuration files under the **/events** foldes in the directory where the command was executed.
