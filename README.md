@@ -25,6 +25,10 @@ All CLI commands will be available with the ``  rhub  `` command.
 
 3. Congratulations, you're all set!
 
+## Service Accounts
+
+For security purposes, service accounts can only be added to your account in the [admin console.](https://console.reactivehub.io/service-account)
+
 ## Commands
 
 The command `rhub --help` list all available core commands, all **action commands** are available at the [documentation page.](https://docs.reactivehub.io) 
