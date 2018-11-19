@@ -20,6 +20,7 @@ export default {
       buildTemplate: (answers = {}, eventModel = {}) => ({
         ...answers,
         MessageAttributes: null,
+        DelaySeconds: 0,
         payload: eventModel,
       }),
       questions: () => [queueQuestion],
