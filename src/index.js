@@ -17,6 +17,7 @@ event.createEvent(program)
 filter.createFilter(program)
 actions.addAction(program)
 login.basicLogin(program)
+login.loggedStatus(program)
 deploy.deployAll(program)
 check.testAll(program)
 
