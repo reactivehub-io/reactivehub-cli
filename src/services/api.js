@@ -12,8 +12,6 @@ const bearer = auth.getAuthToken() && `Bearer ${auth.getAuthToken()}`
 
 const sendPost = async (url, payload) => {
   const headers = bearer ? { Authorization: bearer } : {}
-  console.log('payload => ', url, payload)
-  console.log(headers)
   return axios.post(url, payload, { headers })
     .then(r => r.data)
     .catch((err) => {
@@ -24,7 +22,6 @@ const sendPost = async (url, payload) => {
 
 const doGet = async (url) => {
   const headers = bearer ? { Authorization: bearer } : {}
-  console.log('headers => ', headers)
   return axios.get(url, { headers })
     .then(r => r.data)
     .catch((err) => {
