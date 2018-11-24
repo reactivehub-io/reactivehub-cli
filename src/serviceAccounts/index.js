@@ -3,6 +3,7 @@ import * as api from '../services/api'
 const typeAlias = {
   GCP: 'GOOGLE_CLOUD_PLATFORM',
   POSTGRES: 'POSTGRESQL',
+  HTTP: 'API',
 }
 
 const servicesMock = [

@@ -26,12 +26,29 @@ const bodyByType = {
   },
 }
 
-const messageByStructure = {
+const msgcontent = '##### Type the message content. #####'
+
+const messageByStructure = eventModel => ({
   json: {
-    default: '##### Type the message content. #####',
+    default: msgcontent,
+    APNS: {
+      aps: {},
+    },
+    FCM: {
+      data: {
+        message: msgcontent,
+        url: '',
+      },
+    },
+    ADM: {
+      data: {
+        message: msgcontent,
+        url: '',
+      },
+    },
   },
-  string: '##### Type the message content. #####',
-}
+  string: msgcontent,
+})
 
 export default {
   name: 'SNS',
@@ -40,9 +57,9 @@ export default {
       name: 'Publish Message',
       processor: 'SNS_PUBLISH_MESSAGE',
       deploy: (action, eventInfo) => sendAction(eventInfo, { serviceAction: 'SNS_PUBLISH_MESSAGE', ...action }),
-      buildTemplate: (answers = {}) => {
+      buildTemplate: (answers = {}, eventModel = {}) => {
         const { MessageType, MessageStructure } = answers
-        const Message = messageByStructure[MessageStructure]
+        const Message = messageByStructure(eventModel)[MessageStructure]
         const snsPayload = {
           ...bodyByType[MessageType],
           Message,

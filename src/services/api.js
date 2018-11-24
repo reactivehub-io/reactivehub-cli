@@ -8,20 +8,29 @@ const namespace = auth.getNamespace()
  * @property {Boolean} status
  * @property {String} message
  */
-const bearer = `Bearer ${auth.getAuthToken()}`
+const bearer = auth.getAuthToken() && `Bearer ${auth.getAuthToken()}`
 
 const sendPost = async (url, payload) => {
   const headers = bearer ? { Authorization: bearer } : {}
+  console.log('payload => ', url, payload)
+  console.log(headers)
   return axios.post(url, payload, { headers })
     .then(r => r.data)
-    .catch(err => err.response.data)
+    .catch((err) => {
+      console.error(err.response.data)
+      return err.response.data
+    })
 }
 
 const doGet = async (url) => {
   const headers = bearer ? { Authorization: bearer } : {}
+  console.log('headers => ', headers)
   return axios.get(url, { headers })
     .then(r => r.data)
-    .catch(err => err.response.data)
+    .catch((err) => {
+      console.error(err.response.data)
+      return err.response.data
+    })
 }
 /**
  * @param {*} payload
