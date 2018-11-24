@@ -1,6 +1,6 @@
 {
   "name": "@reactivehub/cli",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "Event Cli Tols",
   "main": "index.js",
   "preferGlobal": true,
@@ -21,6 +21,7 @@
     "login": "NODE_ENV=development nodemon src/index.js login --exec babel-node",
     "deploy": "NODE_ENV=development nodemon src/index.js deploy --exec babel-node",
     "test-deploy": "NODE_ENV=development nodemon src/index.js test --exec babel-node",
+    "status": "NODE_ENV=development nodemon src/index.js status --exec babel-node",
     "hlp": "nodemon src/index.js --help --exec babel-node"
   },
   "dependencies": {

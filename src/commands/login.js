@@ -29,6 +29,14 @@ const basicLogin = (program) => {
     })
 }
 
+const loggedStatus = (program) => {
+  program
+    .command('status')
+    .description('Login Status')
+    .action(async () => auth.authStatus())
+}
+
 export default {
   basicLogin,
+  loggedStatus,
 }
