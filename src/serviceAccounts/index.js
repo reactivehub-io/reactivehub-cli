@@ -1,4 +1,6 @@
+import chalk from 'chalk'
 import * as api from '../services/api'
+import messages from '../messages'
 
 const typeAlias = {
   GCP: 'GOOGLE_CLOUD_PLATFORM',
@@ -63,7 +65,18 @@ const isServiceAccountOfType = async ({ type: typeParam, id }) => {
     .length > 0
 }
 
+const getServiceAccountsOfType = async (type) => {
+  const serviceAccountsOfType = await getServiceAccounts({ type })
+  if (!serviceAccountsOfType || serviceAccountsOfType.length === 0) {
+    messages.error(`Service accounts of type ${chalk.blue.bold(type)} does not exists!`)
+    messages.info(`Go to https://console.reactivehub.io/service-accounts/new/${type} and create a new service account entry.`)
+    return null
+  }
+  return serviceAccountsOfType
+}
+
 export default {
   getServiceAccounts,
   isServiceAccountOfType,
+  getServiceAccountsOfType,
 }

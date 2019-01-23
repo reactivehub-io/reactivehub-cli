@@ -25,16 +25,6 @@ const checkFilter = (eventId, filterId) => {
   return true
 }
 
-const getServiceAccounts = async (type) => {
-  const serviceAccountsOfType = await ServiceAccounts.getServiceAccounts({ type })
-  if (!serviceAccountsOfType || serviceAccountsOfType.length === 0) {
-    messages.error(`Service accounts of type ${chalk.blue.bold(type)} does not exists!`)
-    messages.info(`Go to https://console.reactivehub.io/service-accounts/new/${type} and create a new service account entry.`)
-    return null
-  }
-  return serviceAccountsOfType
-}
-
 const actionQuestions = async (actionConfig, { id, eventId, filterId, type, action, serviceAccountId, async }) => {
   try {
     const { actions: configActions = [] } = actionConfig
@@ -89,7 +79,7 @@ const addAction = (program) => {
         if (!checkFilter(eventId, filterId)) return false
         const actionConfig = actions.getActionConfig(type, action)
         if (!actionConfig) return false
-        const serviceAccounts = await getServiceAccounts(type)
+        const serviceAccounts = await ServiceAccounts.getServiceAccountsOfType(type)
         if (!serviceAccounts) return false
 
         const { serviceAccountId, id: actionId, async } = await prompt(Questions.create(serviceAccounts))
@@ -111,7 +101,8 @@ const addAction = (program) => {
           { id: actionId, eventId, filterId, type, action, serviceAccountId, async },
         )
       } catch (e) {
-        console.log(e)
+        // console.log(e)
+        return false
       }
     })
 }
