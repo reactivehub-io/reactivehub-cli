@@ -65,18 +65,26 @@ const isServiceAccountOfType = async ({ type: typeParam, id }) => {
     .length > 0
 }
 
-const getServiceAccountsOfType = async (type) => {
-  const serviceAccountsOfType = await getServiceAccounts({ type })
+
+const checkSeviceAccounts = (serviceAccountsOfType, type) => {
   if (!serviceAccountsOfType || serviceAccountsOfType.length === 0) {
     messages.error(`Service accounts of type ${chalk.blue.bold(type)} does not exists!`)
     messages.info(`Go to https://console.reactivehub.io/service-accounts/new/${type} and create a new service account entry.`)
-    return null
+    return false
   }
+  return true
+}
+
+const getServiceAccountsOfType = async (type) => {
+  const serviceAccountsOfType = await getServiceAccounts({ type })
+  if (!checkSeviceAccounts(serviceAccountsOfType)) return false
   return serviceAccountsOfType
 }
+
 
 export default {
   getServiceAccounts,
   isServiceAccountOfType,
   getServiceAccountsOfType,
+  checkSeviceAccounts,
 }

@@ -68,3 +68,15 @@ export const getServiceAccounts = (type) => {
   const url = paths.namedQuery('service-accounts-by-type', params)
   return doGet(url).then(r => r.data)
 }
+
+export const getAvailableListenerTypes = (type) => {
+  const params = `?type=${type}`
+  const url = paths.namedQuery('list-available-listener-types', params)
+  return doGet(url).then(r => r.data)
+}
+
+export const getListenerModel = (type, trigger) => {
+  const params = `?type=${type}&trigger=${trigger}`
+  const url = paths.namedQuery('get-listener-model', params)
+  return doGet(url).then(r => r.data.shift().model)
+}

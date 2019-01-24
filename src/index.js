@@ -6,6 +6,7 @@ import actions from './commands/actions'
 import login from './commands/login'
 import deploy from './commands/deploy'
 import check from './commands/check'
+import listener from './commands/listener'
 
 const program = require('commander')
 
@@ -20,6 +21,7 @@ login.basicLogin(program)
 login.loggedStatus(program)
 deploy.deployAll(program)
 check.testAll(program)
+listener.init(program)
 
 program.parse(process.argv)
 
