@@ -24,6 +24,7 @@ const showSuccess = ({ type, listenerType, serviceAccountId }) => {
 }
 
 const createFile = ({ serviceAccountId, type: servieAccountType, listenerType, triggers }) => {
+  console.log('TODO BUILD YAML')
   console.log({ serviceAccountId, servieAccountType, listener: listenerType, triggers })
 }
 
