@@ -4,6 +4,7 @@ import messages from '../messages'
 import ServiceAccounts from '../serviceAccounts'
 import questions from '../commands/questions/listener'
 import prompt from '../libs/inquirer'
+import config from './config'
 
 const getAvailableListenerTypes = async (type) => {
   const types = await api.getAvailableListenerTypes(type) || []
@@ -26,6 +27,8 @@ const showSuccess = ({ type, listenerType, serviceAccountId }) => {
 const createFile = ({ serviceAccountId, type: servieAccountType, listenerType, triggers }) => {
   console.log('TODO BUILD YAML')
   console.log({ serviceAccountId, servieAccountType, listener: listenerType, triggers })
+  const listenerFolder = config.folders.listeners()
+  console.log(listenerFolder)
 }
 
 const addListener = async (type) => {
@@ -56,7 +59,7 @@ const addListener = async (type) => {
       }
     }
 
-    return createFile({ serviceAccountId, type, listenerType, triggers })
+    return createFile({ serviceAccountId, type, listenerType, model, triggers })
   } catch (e) {
     console.log(e)
     return false
