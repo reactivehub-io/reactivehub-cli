@@ -25,6 +25,14 @@ const addTrigger = [
   },
 ]
 
+const addMoreTriggers = [
+  {
+    type: 'confirm',
+    name: 'addMoreTriggers',
+    message: 'Would you like to add more events to trigger?',
+  },
+]
+
 const confirmTriggeredEvents = [
   {
     type: 'confirm',
@@ -33,8 +41,21 @@ const confirmTriggeredEvents = [
   },
 ]
 
+const selectEvent = events => [
+  {
+    type: 'autocomplete',
+    name: 'eventId',
+    message: 'Select the event to trigger ...',
+    source: async (answersSoFar, input = '') => events
+      .filter(({ id = '', name = '' }) => (id.match(input) || name.match(input)))
+      .map(({ id }) => id),
+  },
+]
+
 export default {
   create,
   addTrigger,
   confirmTriggeredEvents,
+  selectEvent,
+  addMoreTriggers,
 }

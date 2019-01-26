@@ -80,3 +80,15 @@ export const getListenerModel = (type, trigger) => {
   const url = paths.namedQuery('get-listener-model', params)
   return doGet(url).then(r => r.data.shift().model)
 }
+
+export const getEventIds = () => {
+  const params = `?namespace=${namespace}`
+  const url = paths.namedQuery('list-event-ids', params)
+  return doGet(url).then(({ data = [] }) => ((data.length > 0 && data) || null))
+}
+
+export const getEventModel = (eventId) => {
+  const params = `?namespace=${namespace}&eventId=${eventId}`
+  const url = paths.namedQuery('get-event-model', params)
+  return doGet(url).then(({ data = [] }) => data.shift().model)
+}

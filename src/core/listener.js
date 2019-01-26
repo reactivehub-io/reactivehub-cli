@@ -5,6 +5,7 @@ import ServiceAccounts from '../serviceAccounts'
 import questions from '../commands/questions/listener'
 import prompt from '../libs/inquirer'
 import config from './config'
+import yaml from './yaml'
 
 const getAvailableListenerTypes = async (type) => {
   const types = await api.getAvailableListenerTypes(type) || []
@@ -20,19 +21,43 @@ const checkAvailableListner = (availableListeners, type) => {
   return true
 }
 
-const showSuccess = ({ type, listenerType, serviceAccountId }) => {
-
-}
-
-const createFile = ({ serviceAccountId, type: servieAccountType, listenerType, triggers }) => {
-  console.log('TODO BUILD YAML')
-  console.log({ serviceAccountId, servieAccountType, listener: listenerType, triggers })
+const createFile = ({ serviceAccountId, type: servieAccountType, listenerType, model, triggers }) => {
   const listenerFolder = config.folders.listeners()
-  console.log(listenerFolder)
+  const folderPath = `${listenerFolder}/${serviceAccountId}`
+  const yamlPayload = {
+    serviceAccountId,
+    servieAccountType,
+    listener: listenerType,
+    triggers,
+    source_model: model,
+  }
+
+  const created = yaml.create(folderPath, listenerType, yamlPayload)
+  if (created) messages.success(`${servieAccountType} listener ${chalk.blue.bold(`${serviceAccountId}.${listenerType}`)} successfully created!`)
+  return created
 }
+
+const loadTriggers = async (triggers = [], loadedEvents = null) => {
+  let newTriggers = triggers
+  let eventIds = loadedEvents || await api.getEventIds()
+  if (!eventIds) {
+    messages.info('Could not find deployed events. Deploy your events and run the add:listener trigger command.')
+  } else {
+    const { eventId } = await prompt(questions.selectEvent(eventIds))
+    newTriggers.push({ eventId })
+    eventIds = eventIds.filter(({ id }) => id !== eventId)
+    const { addMoreTriggers } = await prompt(questions.addMoreTriggers)
+    if (addMoreTriggers) {
+      newTriggers = loadTriggers(newTriggers, eventIds)
+    }
+  }
+  return newTriggers
+}
+
+const getTriggerModels = async (triggers = []) =>
+  Promise.all(triggers.map(({ eventId }) => api.getEventModel(eventId).then(model => ({ eventId, payload: model }))))
 
 const addListener = async (type) => {
-  console.log('type => ', type)
   try {
     const [serviceAccounts, availableListeners] = await Promise.all([
       ServiceAccounts.getServiceAccounts({ type }),
@@ -54,8 +79,7 @@ const addListener = async (type) => {
     if (addTrigger) {
       const { eventConfirm } = await prompt(questions.confirmTriggeredEvents)
       if (eventConfirm) {
-        triggers = []
-        console.log(eventConfirm)
+        triggers = await getTriggerModels(await loadTriggers())
       }
     }
 

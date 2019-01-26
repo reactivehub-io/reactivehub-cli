@@ -3,7 +3,7 @@ import chalk from 'chalk'
 import messages from '../messages'
 
 const cwd = process.cwd()
-const rcJsonName = '.rhubrc.json'
+const rcJsonName = '.rhubrc'
 const jsonPath = `${cwd}/${rcJsonName}`
 
 const existsRC = () => fs.existsSync(jsonPath)
@@ -11,6 +11,7 @@ const existsRC = () => fs.existsSync(jsonPath)
 const getConfigurationFile = () => {
   if (!existsRC()) {
     messages.error(`Could not find the ${chalk.blueBright(rcJsonName)} file at ${cwd}`)
+    throw new Error('Configuration file not found')
   }
   return fs.readJSONSync(jsonPath)
 }
