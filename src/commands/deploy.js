@@ -5,10 +5,20 @@ const deployAll = (program) => {
     .command('deploy')
     .description('Deploy application')
     .action(() => {
-      deploy()
+      deploy.deployAll()
     })
 }
 
-export default {
-  deployAll,
+const deployListeners = (program) => {
+  program
+    .command('deploy:listener')
+    .description('Deploy application')
+    .action(() => {
+      deploy.deployListener()
+    })
+}
+
+export default (program) => {
+  deployAll(program)
+  deployListeners(program)
 }

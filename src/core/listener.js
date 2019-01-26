@@ -1,4 +1,5 @@
 import chalk from 'chalk'
+import fs from 'fs-extra'
 import * as api from '../services/api'
 import messages from '../messages'
 import ServiceAccounts from '../serviceAccounts'
@@ -90,7 +91,21 @@ const addListener = async (type) => {
   }
 }
 
+const getListenersFileMaps = () => {
+  const listenerFolder = config.folders.listeners()
+  const dirs = fs.readdirSync(listenerFolder)
+  const files = dirs.map(dir => ({ dir: `${listenerFolder}/${dir}`, files: fs.readdirSync(`${listenerFolder}/${dir}`) }))
+  return files
+}
+
+const openListenerFile = (dir, file) => {
+  const content = yaml.toJson(dir, file)
+  console.log(content)
+}
+
 export default {
   getAvailableListenerTypes,
   addListener,
+  getListenersFileMaps,
+  openListenerFile,
 }

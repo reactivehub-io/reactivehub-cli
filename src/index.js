@@ -14,14 +14,16 @@ program
   .version('1.0.0')
   .description('Contact management system')
 
-event.createEvent(program)
-filter.createFilter(program)
-actions.addAction(program)
-login.basicLogin(program)
-login.loggedStatus(program)
-deploy.deployAll(program)
-check.testAll(program)
-listener.init(program)
-
-program.parse(process.argv)
-
+try {
+  event.createEvent(program)
+  filter.createFilter(program)
+  actions.addAction(program)
+  login.basicLogin(program)
+  login.loggedStatus(program)
+  deploy(program)
+  check.testAll(program)
+  listener.init(program)
+  program.parse(process.argv)
+} catch (e) {
+  console.log('Error processing your request')
+}

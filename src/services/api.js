@@ -35,6 +35,9 @@ const doGet = async (url) => {
  */
 export const sendEvent = async payload => sendPost(paths.event(eventTypes.NEW_EVENT), payload)
 
+export const sendListener = async payload => sendPost(paths.event(eventTypes.NEW_LISTENER), payload)
+export const sendListenerTrigger = async payload => sendPost(paths.event(eventTypes.NEW_LISTENER_TRIGGER), payload)
+
 /**
  * @param {*} payload
  * @returns {Promise.<ServiceReturn>}
