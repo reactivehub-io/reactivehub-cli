@@ -11,7 +11,7 @@ const program = require('commander')
 
 program
   .version('1.0.0')
-  .description('Contact management system')
+  .description('')
 
 event.createEvent(program)
 filter.createFilter(program)
