@@ -6,6 +6,8 @@ import actions from './commands/actions'
 import login from './commands/login'
 import deploy from './commands/deploy'
 import check from './commands/check'
+import listener from './commands/listener'
+import init from './commands/init'
 
 const program = require('commander')
 
@@ -13,13 +15,17 @@ program
   .version('1.0.0')
   .description('')
 
-event.createEvent(program)
-filter.createFilter(program)
-actions.addAction(program)
-login.basicLogin(program)
-login.loggedStatus(program)
-deploy.deployAll(program)
-check.testAll(program)
-
-program.parse(process.argv)
-
+try {
+  init(program)
+  deploy(program)
+  event.createEvent(program)
+  filter.createFilter(program)
+  actions.addAction(program)
+  login.basicLogin(program)
+  login.loggedStatus(program)
+  check.testAll(program)
+  listener.init(program)
+  program.parse(process.argv)
+} catch (e) {
+  console.log('Error processing your request', e)
+}
