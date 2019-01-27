@@ -50,7 +50,6 @@
     "inquirer": "^6.2.0",
     "inquirer-autocomplete-prompt": "^1.0.1",
     "opn": "^5.4.0",
-    "yaml-js": "^0.2.3",
     "yamljs": "^0.3.0"
   },
   "repository": {
