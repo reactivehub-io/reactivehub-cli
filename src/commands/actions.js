@@ -8,6 +8,7 @@ import actions from '../actions'
 import actionsCore from '../core/actions'
 import ServiceAccounts from '../serviceAccounts'
 import Questions from './questions/action'
+import config from '../core/config'
 
 const checkEvent = (eventId) => {
   if (!event.eventExists(eventId)) {
@@ -75,6 +76,7 @@ const addAction = (program) => {
     .description('Add a New Event')
     .action(async (eventId, filterId, type, action) => {
       try {
+        config.getConfigurationFile()
         if (!checkEvent(eventId)) return false
         if (!checkFilter(eventId, filterId)) return false
         const actionConfig = actions.getActionConfig(type, action)

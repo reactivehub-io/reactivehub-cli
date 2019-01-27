@@ -1,4 +1,5 @@
 const url = 'https://gateway.reactivehub.io'
+// const url = 'http://localhost:8080'
 
 export const paths = {
   event: event => `${url}/event/${event}`,

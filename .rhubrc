@@ -1,8 +1,0 @@
-{
-  "events": {
-    "folder": "events"
-  },
-  "listeners":{
-    "folder": "listeners"
-  }
-}

@@ -24,6 +24,7 @@
     "status": "NODE_ENV=development nodemon src/index.js status --exec babel-node",
     "listener": "NODE_ENV=development nodemon src/index.js add:listener STRIPE --exec babel-node",
     "deploy-listener": "NODE_ENV=development nodemon src/index.js deploy:listener --exec babel-node",
+    "in": "NODE_ENV=development nodemon src/index.js init --exec babel-node",
     "hlp": "nodemon src/index.js --help --exec babel-node"
   },
   "dependencies": {

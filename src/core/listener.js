@@ -22,19 +22,19 @@ const checkAvailableListner = (availableListeners, type) => {
   return true
 }
 
-const createFile = ({ serviceAccountId, type: servieAccountType, listenerType, model, triggers }) => {
+const createFile = ({ serviceAccountId, type: serviceAccountType, listenerType, model, triggers }) => {
   const listenerFolder = config.folders.listeners()
   const folderPath = `${listenerFolder}/${serviceAccountId}`
   const yamlPayload = {
     serviceAccountId,
-    servieAccountType,
+    serviceAccountType,
     listener: listenerType,
     triggers,
     source_model: model,
   }
 
   const created = yaml.create(folderPath, listenerType, yamlPayload)
-  if (created) messages.success(`${servieAccountType} listener ${chalk.blue.bold(`${serviceAccountId}.${listenerType}`)} successfully created!`)
+  if (created) messages.success(`${serviceAccountType} listener ${chalk.blue.bold(`${serviceAccountId}.${listenerType}`)} successfully created!`)
   return created
 }
 
@@ -98,14 +98,20 @@ const getListenersFileMaps = () => {
   return files
 }
 
-const openListenerFile = (dir, file) => {
+const prepareDeploy = (dir, file, namespace) => {
   const content = yaml.toJson(dir, file)
-  console.log(content)
+  const { serviceAccountId, serviceAccountType, listener, triggers } = content
+  const id = `${namespace}:${listener}:${serviceAccountId}`
+  const newListener = { serviceAccountId, serviceAccountType, listener }
+  return {
+    newListener: { ...newListener, id },
+    newListenerTrigger: triggers && triggers.map(({ eventId, payload }) => ({ eventId, payload, listener_id: id, serviceAccountId })),
+  }
 }
 
 export default {
   getAvailableListenerTypes,
   addListener,
   getListenersFileMaps,
-  openListenerFile,
+  prepareDeploy,
 }

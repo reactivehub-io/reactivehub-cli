@@ -18,5 +18,6 @@ export default {
   },
   startingDeploy: (type = 'all') => messages.info(`Deploy ${type} started.`),
   eventDeploySuccess: eventId => messages.success(`Event "${eventId}" successfully deployed.`),
+  listenerDeploySuccess: id => messages.success(`Listener "${id}" successfully deployed.`),
   deployFinished: total => messages.success(`${total} events successfully deployed.`),
 }

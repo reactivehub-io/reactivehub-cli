@@ -1,5 +1,5 @@
 import event from './event'
-import { sendEvent, sendEventFilter } from '../services/api'
+import { sendEvent, sendEventFilter, sendListener, sendListenerTrigger } from '../services/api'
 import auth from './auth'
 import ActionMap from '../actions'
 import * as check from './eventCheck/check'
@@ -74,7 +74,7 @@ const deployEvent = async (eventName) => {
   await Promise.all(filterPromises)
 }
 
-const deployAll = async () => {
+const deployEvents = async () => {
   const testStatus = await check.run({ isDeploy: true })
   if (testStatus) {
     messages.startingDeploy()
@@ -87,16 +87,27 @@ const deployAll = async () => {
   return false
 }
 
-const deployListener = async (ids = null) => {
+const deployListener = async () => {
   messages.startingDeploy('listeners')
   const fileMap = listeners.getListenersFileMaps()
-  fileMap.map(({ dir, files }) => {
-    return files.map(file => listeners.openListenerFile(dir, file))
+  const deployActions = []
+  fileMap.forEach(({ dir, files }) => files.forEach(file => deployActions.push(listeners.prepareDeploy(dir, file, namespace))))
+  return deployActions.map(async ({ newListener, newListenerTrigger }) => {
+    const { serviceAccountId, listener } = newListener
+    await sendListener({ namespace, ...newListener })
+    await Promise.all(newListenerTrigger.map(trigger => sendListenerTrigger({ ...trigger, namespace })))
+    messages.listenerDeploySuccess(`${serviceAccountId}.${listener}`)
   })
-  console.log(fileMap)
+}
+
+
+const deployAll = async () => {
+  await deployEvents()
+  await deployListener()
 }
 
 export default {
   deployAll,
   deployListener,
+  deployEvents,
 }
