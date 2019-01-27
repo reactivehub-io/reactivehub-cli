@@ -16,7 +16,8 @@ export default {
     messages.success(chalk.green(`Event config test passed${deploy ? ', starting deploy.' : '.'}`))
     console.log('')
   },
-  startingDeploy: () => messages.info('Event deploy started.'),
+  startingDeploy: (type = 'all') => messages.info(`Deploy ${type} started.`),
   eventDeploySuccess: eventId => messages.success(`Event "${eventId}" successfully deployed.`),
+  listenerDeploySuccess: id => messages.success(`Listener "${id}" successfully deployed.`),
   deployFinished: total => messages.success(`${total} events successfully deployed.`),
 }

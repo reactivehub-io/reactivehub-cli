@@ -3,7 +3,11 @@ import yaml from 'yamljs'
 import messages from '../messages'
 import file from '../libs/file'
 
-const getFileName = fileName => `${fileName}.yaml`
+const getFileName = (fileName) => {
+  const hasYamlInName = fileName.match('.yaml') 
+  const name = !hasYamlInName ? `${fileName}.yaml` : fileName
+  return name
+}
 
 const fileExists = (folder, fileName) => {
   const path = file.fullPath(folder, getFileName(fileName))

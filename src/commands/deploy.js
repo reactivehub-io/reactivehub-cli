@@ -1,14 +1,26 @@
 import deploy from '../core/deploy'
+import config from '../core/config'
 
-const deployAll = (program) => {
+export default (program) => {
   program
     .command('deploy')
     .description('Deploy application')
     .action(() => {
-      deploy()
+      config.getConfigurationFile()
+      deploy.deployAll()
     })
-}
-
-export default {
-  deployAll,
+  program
+    .command('deploy:event')
+    .description('Deploy application')
+    .action(() => {
+      config.getConfigurationFile()
+      deploy.deployEvents()
+    })
+  program
+    .command('deploy:listener')
+    .description('Deploy application')
+    .action(() => {
+      config.getConfigurationFile()
+      deploy.deployListener()
+    })
 }
