@@ -11,7 +11,7 @@ const createFile = (payload, { withExample = false, override = false } = {}) => 
   const name = id
   const fileName = `${eventGroup}.${id}`
 
-  const newPayload = { id: `${eventGroup.id}`, name, eventGroup, version }
+  const newPayload = { id: `${eventGroup}.${id}`, name, eventGroup, version }
 
   if (withExample || !model) {
     newPayload.model = {
