@@ -107,7 +107,8 @@ const prepareDeploy = (dir, file, namespace) => {
   const newListener = { serviceAccountId, serviceAccountType, listener }
   return {
     newListener: { ...newListener, id },
-    newListenerTrigger: triggers && triggers.map(({ eventId, payload }) => ({ eventId, payload, listener_id: id, serviceAccountId })),
+    newListenerTrigger: triggers && triggers.map(({ eventId, payload }) =>
+      ({ eventId, payload, listenerType: listener, listener_id: id, serviceAccountId })),
   }
 }
 

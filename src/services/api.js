@@ -13,7 +13,9 @@ const bearer = auth.getAuthToken() && `Bearer ${auth.getAuthToken()}`
 const sendPost = async (url, payload) => {
   const headers = bearer ? { Authorization: bearer } : {}
   return axios.post(url, payload, { headers })
-    .then(r => r.data)
+    .then(r => {
+      return r.data
+    })
     .catch((err) => {
       console.error(err.response.data)
       return err.response.data
