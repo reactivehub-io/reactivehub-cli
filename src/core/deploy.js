@@ -92,12 +92,14 @@ const deployListener = async () => {
   const fileMap = listeners.getListenersFileMaps()
   const deployActions = []
   fileMap.forEach(({ dir, files }) => files.forEach(file => deployActions.push(listeners.prepareDeploy(dir, file, namespace))))
-  return deployActions.map(async ({ newListener, newListenerTrigger }) => {
+  const deployStatus = deployActions.map(async ({ newListener, newListenerTrigger }) => {
     const { serviceAccountId, listener } = newListener
     await sendListener({ namespace, ...newListener })
     await Promise.all(newListenerTrigger.map(trigger => sendListenerTrigger({ ...trigger, namespace })))
     messages.listenerDeploySuccess(`${serviceAccountId}.${listener}`)
   })
+  await Promise.all(deployStatus)
+  messages.deployFinished(fileMap.length, 'listeners')
 }
 
 

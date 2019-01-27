@@ -93,6 +93,8 @@ const addListener = async (type) => {
 
 const getListenersFileMaps = () => {
   const listenerFolder = config.folders.listeners()
+  if (!fs.pathExistsSync(listenerFolder)) return []
+
   const dirs = fs.readdirSync(listenerFolder)
   const files = dirs.map(dir => ({ dir: `${listenerFolder}/${dir}`, files: fs.readdirSync(`${listenerFolder}/${dir}`) }))
   return files
