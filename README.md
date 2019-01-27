@@ -35,6 +35,7 @@ The command `rhub --help` list all available core commands, all **action command
 
 Command | Description
 ------------ | -------------
+**init** | Create the **.rhubrc** configuration file.
 **login** | Authenticate to your **Reactivehub** account, you'll be redirect to the console admin to issue your auth code.
 **add:event** | Create a new event config YAML in the **/events** folder in the directory where the command was executed.
 **add:filter** | Add a new filter to an event.
