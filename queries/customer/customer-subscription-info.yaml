@@ -1,0 +1,4 @@
+id: customer-subscription-info
+scope: customer
+serviceAccountId: reactivehub-postgresql
+query: 'PASTE YOUR QUERY HERE, USE WILDCARDS FOR MUTABLE PARAMS'

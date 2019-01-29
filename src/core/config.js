@@ -15,7 +15,7 @@ const rcPayload = `{
   },
   "queries": {
     "folder": "queries"
-  },
+  }
 }`
 
 const existsRC = () => fs.existsSync(jsonPath)
