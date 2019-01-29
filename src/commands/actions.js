@@ -73,7 +73,7 @@ const actionQuestions = async (actionConfig, { id, eventId, filterId, type, acti
 const addAction = (program) => {
   program
     .command('add:action <eventId> <filterId> <type> <action>')
-    .description('Add a New Event')
+    .description('Add a new event')
     .action(async (eventId, filterId, type, action) => {
       try {
         config.getConfigurationFile()

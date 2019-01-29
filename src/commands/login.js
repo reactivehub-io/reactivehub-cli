@@ -32,7 +32,7 @@ const basicLogin = (program) => {
 const loggedStatus = (program) => {
   program
     .command('status')
-    .description('Login Status')
+    .description('Login status')
     .action(async () => auth.authStatus())
 }
 

@@ -6,7 +6,7 @@ import config from '../core/config'
 const createEvent = (program) => {
   program
     .command('add:event')
-    .description('Add a New Event')
+    .description('Add a new event')
     .action(() => {
       config.getConfigurationFile()
       prompt(create)
