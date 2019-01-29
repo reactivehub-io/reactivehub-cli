@@ -72,7 +72,6 @@
   },
   "homepage": "https://github.com/reactivehub-io/reactivehub-cli#readme",
   "devDependencies": {
-    "nodemon": "^1.18.9",
-    "win-node-env": "^0.4.0"
+    "nodemon": "^1.18.9"
   }
 }
