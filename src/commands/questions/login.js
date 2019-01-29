@@ -24,7 +24,7 @@ const preLogin = [
   {
     type: 'confirm',
     name: 'doRedirect',
-    message: "You're beign redirect to the Cli authorization page, confirm?",
+    message: 'You will be redirected to the cli authorization page. Do you confirm?',
   },
 ]
 
