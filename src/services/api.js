@@ -40,6 +40,8 @@ export const sendEvent = async payload => sendPost(paths.event(eventTypes.NEW_EV
 export const sendListener = async payload => sendPost(paths.event(eventTypes.NEW_LISTENER), payload)
 export const sendListenerTrigger = async payload => sendPost(paths.event(eventTypes.NEW_LISTENER_TRIGGER), payload)
 
+export const sendQuery = async payload => sendPost(paths.event(eventTypes.NAMED_QUERY), payload)
+
 /**
  * @param {*} payload
  * @returns {Promise.<ServiceReturn>}
@@ -78,6 +80,12 @@ export const getAvailableListenerTypes = (type) => {
   const params = `?type=${type}`
   const url = paths.namedQuery('list-available-listener-types', params)
   return doGet(url).then(r => r.data)
+}
+
+export const isAvailableQuerySerivce = (type) => {
+  const params = `?type=${type}`
+  const url = paths.namedQuery('list-available-query-services', params)
+  return doGet(url).then(r => r.data.shift().type === type)
 }
 
 export const getListenerModel = (type, trigger) => {
