@@ -1,46 +1,23 @@
-import opn from 'opn'
+
 import prompt from '../libs/inquirer'
 import auth from '../core/auth'
-import messages from '../messages'
-import questions from './questions/login'
+import questions from './questions/logout'
 
-const authUrl = 'https://console.reactivehub.io/api-token/cli-auth'
-
-const buildSeparatorString = s => ''.padStart(s, '-')
-
-const basicLogin = (program) => {
+const basicLogout = (program) => {
   program
     .command('logout')
-    .description('Logout')
+    .description('Log out from Reactivehub')
     .action(async () => {
-      const { doRedirect } = await prompt(questions.preLogin)
-      if (!doRedirect) {
-        const message = 'Login aborted by the user.'
+      const { logout } = await prompt(questions.logoutQuestions)
 
-        messages.error(buildSeparatorString(message.length, '-'))
-        messages.error(message)
-        messages.error(buildSeparatorString(message.length, '-'))
-        return false
+      if (logout) {
+        auth.logoffHandler()
+        return true
       }
-
-      opn(authUrl)
-
-      messages.info('')
-      messages.info('Copy your authorization code:')
-      messages.info('')
-      return prompt(questions.authQuestions)
-        .then(answers => auth.authHandler(answers))
+      return false
     })
 }
 
-const loggedStatus = (program) => {
-  program
-    .command('status')
-    .description('Login status')
-    .action(async () => auth.authStatus())
-}
-
 export default {
-  basicLogin,
-  loggedStatus,
+  basicLogout,
 }

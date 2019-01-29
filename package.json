@@ -19,13 +19,14 @@
     "afl": "NODE_ENV=development nodemon src/index.js add:filter --exec babel-node",
     "adac": "NODE_ENV=development nodemon src/index.js add:action cli.cli-event on-event AWS SNS --exec babel-node",
     "login": "NODE_ENV=development nodemon src/index.js login --exec babel-node",
+    "logout": "NODE_ENV=development nodemon src/index.js logout --exec babel-node",
     "deploy": "NODE_ENV=development nodemon src/index.js deploy --exec babel-node",
     "test-deploy": "NODE_ENV=development nodemon src/index.js test --exec babel-node",
     "status": "NODE_ENV=development nodemon src/index.js status --exec babel-node",
     "listener": "NODE_ENV=development nodemon src/index.js add:listener STRIPE --exec babel-node",
     "deploy-listener": "NODE_ENV=development nodemon src/index.js deploy:listener --exec babel-node",
     "in": "NODE_ENV=development nodemon src/index.js init --exec babel-node",
-    "hlp": "nodemon src/index.js --help --exec babel-node"
+    "hlp": "nodemon 'src/index.js --help' --exec babel-node"
   },
   "dependencies": {
     "@babel/core": "^7.1.2",
