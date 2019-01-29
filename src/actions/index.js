@@ -26,13 +26,13 @@ const actions = {
 const getActionConfig = (type, action) => {
   const actionType = actions[type]
   if (!actionType) {
-    messages.error(`Action ${chalk.blue.bold(type)} does not exists!`)
+    messages.error(`Action ${chalk.blue.bold(type)} does not exist!`)
     return false
   }
 
   const actionConfig = actionType[action]
   if (!actionConfig) {
-    messages.error(`Action ${chalk.blue.bold(`${type}:${action}`)} does not exists!`)
+    messages.error(`Action ${chalk.blue.bold(`${type}:${action}`)} does not exist!`)
     return false
   }
 
