@@ -6,6 +6,8 @@ import questions from './questions/login'
 
 const authUrl = 'https://console.reactivehub.io/api-token/cli-auth'
 
+const buildSeparatorString = s => ''.padStart(s, '-')
+
 const basicLogin = (program) => {
   program
     .command('login')
@@ -13,9 +15,11 @@ const basicLogin = (program) => {
     .action(async () => {
       const { doRedirect } = await prompt(questions.preLogin)
       if (!doRedirect) {
-        messages.error('--------------------------')
-        messages.error('Login aborted by the user.')
-        messages.error('--------------------------')
+        const message = 'Login aborted by the user.'
+
+        messages.error(buildSeparatorString(message.length, '-'))
+        messages.error(message)
+        messages.error(buildSeparatorString(message.length, '-'))
         return false
       }
 
