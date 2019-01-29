@@ -23,4 +23,11 @@ export default (program) => {
       config.getConfigurationFile()
       deploy.deployListener()
     })
+  program
+    .command('deploy:query')
+    .description('Deploy application')
+    .action(() => {
+      config.getConfigurationFile()
+      deploy.deployQuery()
+    })
 }

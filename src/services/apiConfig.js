@@ -25,4 +25,5 @@ export const eventTypes = {
   ISSUE_CLI_TOKEN: 'rhub/issue-cli-token',
   NEW_LISTENER: 'new-listener',
   NEW_LISTENER_TRIGGER: 'new-listener-trigger',
+  NAMED_QUERY: 'named-query',
 }

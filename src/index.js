@@ -8,6 +8,7 @@ import deploy from './commands/deploy'
 import check from './commands/check'
 import listener from './commands/listener'
 import init from './commands/init'
+import query from './commands/queries'
 
 const program = require('commander')
 
@@ -25,6 +26,7 @@ try {
   login.loggedStatus(program)
   check.testAll(program)
   listener.init(program)
+  query.init(program)
   program.parse(process.argv)
 } catch (e) {
   console.log('Error processing your request', e)

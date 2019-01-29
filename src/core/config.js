@@ -12,7 +12,10 @@ const rcPayload = `{
   },
   "listeners": {
     "folder": "listeners"
-  }
+  },
+  "queries": {
+    "folder": "queries"
+  },
 }`
 
 const existsRC = () => fs.existsSync(jsonPath)
@@ -26,7 +29,7 @@ const getConfigurationFile = () => {
 }
 
 const getFolder = (name) => {
-  const { folder = name } = getConfigurationFile()[name]
+  const { folder = name } = getConfigurationFile()[name] || {}
   return folder
 }
 
@@ -40,5 +43,6 @@ export default {
   folders: {
     events: () => getFolder('events'),
     listeners: () => getFolder('listeners'),
+    queries: () => getFolder('queries')
   },
 }

@@ -1,10 +1,11 @@
 import event from './event'
-import { sendEvent, sendEventFilter, sendListener, sendListenerTrigger } from '../services/api'
+import { sendEvent, sendEventFilter, sendListener, sendListenerTrigger, sendQuery } from '../services/api'
 import auth from './auth'
 import ActionMap from '../actions'
 import * as check from './eventCheck/check'
 import messages from '../messages/checkDeploy'
 import listeners from '../core/listener'
+import queries from './queries'
 
 const { loadEvent, getEventsInFolder } = event
 const namespace = auth.getNamespace()
@@ -77,7 +78,7 @@ const deployEvent = async (eventName) => {
 const deployEvents = async () => {
   const testStatus = await check.run({ isDeploy: true })
   if (testStatus) {
-    messages.startingDeploy()
+    messages.startingDeploy('EVENTS')
     const events = getEventsInFolder()
     const deployPromises = events.map(eventModel => deployEvent(eventModel))
     await Promise.all(deployPromises)
@@ -88,7 +89,7 @@ const deployEvents = async () => {
 }
 
 const deployListener = async () => {
-  messages.startingDeploy('listeners')
+  messages.startingDeploy('LISTENERS')
   const fileMap = listeners.getListenersFileMaps()
   const deployActions = []
   fileMap.forEach(({ dir, files }) => files.forEach(file => deployActions.push(listeners.prepareDeploy(dir, file, namespace))))
@@ -103,13 +104,27 @@ const deployListener = async () => {
 }
 
 
+const deployQuery = async () => {
+  messages.startingDeploy('QUERIES')
+  const fileMap = queries.getFileMap()
+  const deployActions = []
+  fileMap.forEach(({ dir, files }) => files.forEach(file => deployActions.push(queries.prepareDeploy(dir, file, namespace))))
+
+  const deployStatus = deployActions.map(async item => sendQuery(item))
+
+  await Promise.all(deployStatus)
+  messages.deployFinished(fileMap.length, 'queries')
+}
+
 const deployAll = async () => {
   await deployEvents()
   await deployListener()
+  await deployQuery()
 }
 
 export default {
   deployAll,
   deployListener,
   deployEvents,
+  deployQuery,
 }
