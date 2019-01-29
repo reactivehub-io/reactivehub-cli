@@ -12,7 +12,7 @@ import config from '../core/config'
 
 const checkEvent = (eventId) => {
   if (!event.eventExists(eventId)) {
-    messages.error(`${chalk.blue.bold(eventId)} does not exists!`)
+    messages.error(`${chalk.blue.bold(eventId)} does not exist!`)
     return false
   }
   return true
@@ -20,7 +20,7 @@ const checkEvent = (eventId) => {
 
 const checkFilter = (eventId, filterId) => {
   if (!filter.filterExists(eventId, filterId)) {
-    messages.error(`Filter ${chalk.blue.bold(filterId)} does not exists on ${chalk.blue.bold(eventId)}.`)
+    messages.error(`Filter ${chalk.blue.bold(filterId)} does not exist on ${chalk.blue.bold(eventId)}.`)
     return false
   }
   return true
@@ -73,7 +73,7 @@ const actionQuestions = async (actionConfig, { id, eventId, filterId, type, acti
 const addAction = (program) => {
   program
     .command('add:action <eventId> <filterId> <type> <action>')
-    .description('Add a New Event')
+    .description('Add a new event')
     .action(async (eventId, filterId, type, action) => {
       try {
         config.getConfigurationFile()

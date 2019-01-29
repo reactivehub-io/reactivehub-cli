@@ -68,7 +68,7 @@ const isServiceAccountOfType = async ({ type: typeParam, id }) => {
 
 const checkSeviceAccounts = (serviceAccountsOfType, type) => {
   if (!serviceAccountsOfType || serviceAccountsOfType.length === 0) {
-    messages.error(`Service accounts of type ${chalk.blue.bold(type)} does not exists!`)
+    messages.error(`Service accounts of type ${chalk.blue.bold(type)} does not exist!`)
     messages.info(`Go to https://console.reactivehub.io/service-accounts/new/${type} and create a new service account entry.`)
     return false
   }

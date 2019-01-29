@@ -15,7 +15,7 @@ const getAvailableListenerTypes = async (type) => {
 
 const checkAvailableListner = (availableListeners, type) => {
   if (!availableListeners) {
-    messages.error(`Listener of type ${chalk.blue.bold(type)} does not exists!`)
+    messages.error(`Listener of type ${chalk.blue.bold(type)} does not exist!`)
     messages.info('Go to https://console.reactivehub.io/listeners/add for more info.')
     return false
   }

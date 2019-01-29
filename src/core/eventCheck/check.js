@@ -8,7 +8,7 @@ import ActionMap from '../../actions'
 
 const actionExists = ({ type, actionType, operation }) => {
   const map = ActionMap.getActionConfig(type, actionType)
-  if (!map) return { status: false, messages: [`Action "${type}/${actionType}" does not exists. Check the ${type} documentation.`] }
+  if (!map) return { status: false, messages: [`Action "${type}/${actionType}" does not exist. Check the ${type} documentation.`] }
 
   if (operation) {
     const { actions } = map
@@ -16,7 +16,7 @@ const actionExists = ({ type, actionType, operation }) => {
     if (!hasOperation) {
       return {
         status: false,
-        messages: [`Operation "${operation}" of action "${type}/${actionType}" does not exists. Check the ${type} documentation.`],
+        messages: [`Operation "${operation}" of action "${type}/${actionType}" does not exist. Check the ${type} documentation.`],
       }
     }
   }
