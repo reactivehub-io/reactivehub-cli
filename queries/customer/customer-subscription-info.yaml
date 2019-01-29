@@ -1,4 +1,12 @@
 id: customer-subscription-info
 scope: customer
 serviceAccountId: reactivehub-postgresql
-query: 'PASTE YOUR QUERY HERE, USE WILDCARDS FOR MUTABLE PARAMS'
+query: SELECT team.team, team.trial, team.trial_days,
+  (now()::date - created_at::date) as spent_days,
+  trial_days - (now()::date - created_at::date) as days_left,
+  sp.*,
+  sg.*
+FROM team_subscription team
+  INNER JOIN subscription_plans sp on team.plan = sp.id
+  INNER JOIN subscription_groups sg ON sp.subscription_group_id = sg.id
+  AND team='{namespace}'

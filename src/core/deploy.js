@@ -105,15 +105,19 @@ const deployListener = async () => {
 
 
 const deployQuery = async () => {
-  messages.startingDeploy('QUERIES')
-  const fileMap = queries.getFileMap()
-  const deployActions = []
-  fileMap.forEach(({ dir, files }) => files.forEach(file => deployActions.push(queries.prepareDeploy(dir, file, namespace))))
+  try {
+    messages.startingDeploy('QUERIES')
+    const fileMap = queries.getFileMap()
 
-  const deployStatus = deployActions.map(async item => sendQuery(item))
+    const deployActions = []
+    fileMap.forEach(({ dir, files }) => files.forEach(file => deployActions.push(queries.prepareDeploy(dir, file, namespace))))
 
-  await Promise.all(deployStatus)
-  messages.deployFinished(fileMap.length, 'queries')
+    const deployStatus = deployActions.map(async item => sendQuery(item))
+    await Promise.all(deployStatus)
+    messages.deployFinished(fileMap.length, 'queries')
+  } catch (e) {
+    messages.queryErrors()
+  }
 }
 
 const deployAll = async () => {

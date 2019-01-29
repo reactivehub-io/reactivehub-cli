@@ -4,6 +4,7 @@ import event from './commands/event'
 import filter from './commands/filter'
 import actions from './commands/actions'
 import login from './commands/login'
+import logout from './commands/logout'
 import deploy from './commands/deploy'
 import check from './commands/check'
 import listener from './commands/listener'
@@ -24,6 +25,7 @@ try {
   actions.addAction(program)
   login.basicLogin(program)
   login.loggedStatus(program)
+  logout.basicLogout(program)
   check.testAll(program)
   listener.init(program)
   query.init(program)

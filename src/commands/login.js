@@ -6,16 +6,20 @@ import questions from './questions/login'
 
 const authUrl = 'https://console.reactivehub.io/api-token/cli-auth'
 
+const buildSeparatorString = s => ''.padStart(s, '-')
+
 const basicLogin = (program) => {
   program
     .command('login')
-    .description('Create a new event filter')
+    .description('Log in to Reactivehub')
     .action(async () => {
       const { doRedirect } = await prompt(questions.preLogin)
       if (!doRedirect) {
-        messages.error('--------------------------')
-        messages.error('Login aborted by the user.')
-        messages.error('--------------------------')
+        const message = 'Login aborted by the user.'
+
+        messages.error(buildSeparatorString(message.length, '-'))
+        messages.error(message)
+        messages.error(buildSeparatorString(message.length, '-'))
         return false
       }
 
@@ -32,7 +36,7 @@ const basicLogin = (program) => {
 const loggedStatus = (program) => {
   program
     .command('status')
-    .description('Login Status')
+    .description('Login status')
     .action(async () => auth.authStatus())
 }
 

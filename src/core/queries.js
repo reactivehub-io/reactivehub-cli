@@ -10,8 +10,7 @@ import yaml from './yaml'
 
 const checkAvailableTypes = (availableListeners, type) => {
   if (!availableListeners) {
-    messages.error(`Listener of type ${chalk.blue.bold(type)} does not exists!`)
-    messages.info('Go to https://console.reactivehub.io/listeners/add for more info.')
+    messages.error(`Query endpoints of type ${chalk.blue.bold(type)} are not supported!`)
     return false
   }
   return true
@@ -60,7 +59,7 @@ const add = async (type) => {
       api.isAvailableQuerySerivce(type),
     ])
 
-    if (!checkAvailableTypes(isAvailable)) return false
+    if (!checkAvailableTypes(isAvailable, type)) return false
 
     if (!ServiceAccounts.checkSeviceAccounts(serviceAccounts, type)) return false
 
@@ -83,10 +82,16 @@ const getFileMap = () => {
 }
 
 const prepareDeploy = (dir, file, namespace) => {
-  const content = yaml.toJson(dir, file)
-  const { query } = content
-  content.query = query.replace(/(\r\n|\n|\r)/gm, ' ')
-  return { ...content, namespace }
+  try {
+    const content = yaml.toJson(dir, file)
+    const { query } = content
+    content.query = query.replace(/(\r\n|\n|\r)/gm, ' ')
+    return { ...content, namespace }
+  } catch (e) {
+    // eslint-disable-next-line
+    messages.error(`Invalid YAML query ${dir}/${file} file, make sure that the query parameter is a valid single or a multi-line string. (https://yaml-multiline.info/)`)
+    throw e
+  }
 }
 
 export default {
