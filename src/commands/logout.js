@@ -10,8 +10,8 @@ const buildSeparatorString = s => ''.padStart(s, '-')
 
 const basicLogin = (program) => {
   program
-    .command('login')
-    .description('Create a new event filter')
+    .command('logout')
+    .description('Logout')
     .action(async () => {
       const { doRedirect } = await prompt(questions.preLogin)
       if (!doRedirect) {
