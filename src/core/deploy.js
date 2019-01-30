@@ -52,7 +52,7 @@ const deployFilter = async (eventId, filter) => {
     console.error(err)
     return false
   }))
-  await Promise.all(actionPromises)
+  if (actionPromises) await Promise.all(actionPromises)
   return true
 }
 
@@ -108,13 +108,11 @@ const deployQuery = async () => {
   try {
     messages.startingDeploy('QUERIES')
     const fileMap = queries.getFileMap()
-
     const deployActions = []
     fileMap.forEach(({ dir, files }) => files.forEach(file => deployActions.push(queries.prepareDeploy(dir, file, namespace))))
-
-    const deployStatus = deployActions.map(async item => sendQuery(item))
+    const deployStatus = deployActions.map(async item => sendQuery(item).then(() => messages.eventDeploySuccess(item.id, 'Query')))
     await Promise.all(deployStatus)
-    messages.deployFinished(fileMap.length, 'queries')
+    messages.deployFinished(deployActions.length, 'queries')
   } catch (e) {
     messages.queryErrors()
   }
