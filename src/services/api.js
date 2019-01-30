@@ -85,7 +85,7 @@ export const getAvailableListenerTypes = (type) => {
 export const isAvailableQuerySerivce = (type) => {
   const params = `?type=${type}`
   const url = paths.namedQuery('list-available-query-services', params)
-  return doGet(url).then(r => r.data.shift() && r.data.shift().type === type)
+  return doGet(url).then(({ data = [{}] }) => data.shift().type === type)
 }
 
 export const getListenerModel = (type, trigger) => {
