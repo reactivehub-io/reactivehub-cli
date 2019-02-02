@@ -18,7 +18,7 @@ const create = serviceAccounts => [
   {
     type: 'confirm',
     name: 'async',
-    message: 'Is this action ASYNC?',
+    message: 'Is this an asynchronous action?',
   },
 ]
 
