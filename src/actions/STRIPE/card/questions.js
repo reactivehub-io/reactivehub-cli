@@ -4,6 +4,12 @@ const usingToken = {
   message: 'Are you using a card token?',
 }
 
+const overrideDefault = {
+  type: 'confirm',
+  name: 'overrideDefault',
+  message: 'Set this card as the customer default payment method?',
+}
+
 const customerId = {
   type: 'input',
   name: 'customerId',
@@ -13,4 +19,5 @@ const customerId = {
 export default {
   usingToken,
   customerId,
+  overrideDefault,
 }
