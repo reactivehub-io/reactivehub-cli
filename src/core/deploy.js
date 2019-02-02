@@ -68,7 +68,7 @@ const deployEvent = async (eventName) => {
     namespace,
   }
 
-  await sendEvent(payload).then(() => messages.eventDeploySuccess(`${eventGroup}.${eventId}`))
+  await sendEvent(payload).then(() => messages.eventDeploySuccess(`${eventId}`))
 
   const filterPromises = filters.map(filter => deployFilter(eventId, filter))
 
