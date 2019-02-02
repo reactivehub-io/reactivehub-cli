@@ -7,6 +7,7 @@ import MYSQL from './MYSQL'
 import POSTGRESQL from './POSTGRESQL'
 import REDIS from './REDIS'
 import SLACK from './SLACK'
+import STRIPE from './STRIPE'
 import messages from '../messages'
 
 const actions = {
@@ -21,6 +22,7 @@ const actions = {
   POSTGRES: POSTGRESQL,
   REDIS,
   SLACK,
+  STRIPE,
 }
 
 const getActionConfig = (type, action) => {
