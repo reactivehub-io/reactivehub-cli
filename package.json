@@ -16,7 +16,7 @@
     "lint": "eslint src/* --fix",
     "dev": "nodemon src/index.js --exec babel-node",
     "aev": "nodemon src/index.js add:event --exec babel-node",
-    "action": "nodemon src/index.js add:action payment.new-charge on-event STRIPE CREATE_CARD --exec babel-node"
+    "action": "nodemon src/index.js add:action payment.new-card on-event STRIPE CREATE_CARD --exec babel-node"
   },
   "dependencies": {
     "@babel/core": "^7.1.2",

@@ -34,7 +34,7 @@ const checkSeviceAccounts = (serviceAccountsOfType, type) => {
 
 const getServiceAccountsOfType = async (type) => {
   const serviceAccountsOfType = await getServiceAccounts({ type })
-  if (!checkSeviceAccounts(serviceAccountsOfType)) return false
+  if (!checkSeviceAccounts(serviceAccountsOfType, type)) return false
   return serviceAccountsOfType
 }
 
