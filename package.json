@@ -1,6 +1,6 @@
 {
   "name": "@reactivehub/cli",
-  "version": "1.0.27",
+  "version": "1.1.0",
   "description": "Event Cli Tols",
   "main": "index.js",
   "preferGlobal": true,
