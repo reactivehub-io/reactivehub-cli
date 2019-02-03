@@ -10,6 +10,7 @@ import SLACK from './SLACK'
 import STRIPE from './STRIPE'
 import DIGITAL_OCEAN from './DIGITAL_OCEAN'
 import messages from '../messages'
+
 const actions = {
   AWS,
   GOOGLE_CLOUD_PLATFORM,

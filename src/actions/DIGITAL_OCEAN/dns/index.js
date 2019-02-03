@@ -1,6 +1,5 @@
 import { sendAction } from '../../../services/api'
 import template from './template'
-import usageQuestions from './questions'
 
 const questions = () => [
 ]
@@ -13,5 +12,5 @@ const CREATE_DOMAIN_RECORD = {
 }
 
 export default {
-  CREATE_USAGE_RECORD,
+  CREATE_DOMAIN_RECORD,
 }
