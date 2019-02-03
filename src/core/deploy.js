@@ -100,7 +100,7 @@ const deployListener = async () => {
     messages.listenerDeploySuccess(`${serviceAccountId}.${listener}`)
   })
   await Promise.all(deployStatus)
-  messages.deployFinished(fileMap.length, 'listeners')
+  messages.deployFinished(deployActions.length, 'listeners')
 }
 
 
