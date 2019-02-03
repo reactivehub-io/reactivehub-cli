@@ -8,8 +8,8 @@ import POSTGRESQL from './POSTGRESQL'
 import REDIS from './REDIS'
 import SLACK from './SLACK'
 import STRIPE from './STRIPE'
+import DIGITAL_OCEAN from './DIGITAL_OCEAN'
 import messages from '../messages'
-
 const actions = {
   AWS,
   GOOGLE_CLOUD_PLATFORM,
@@ -23,6 +23,7 @@ const actions = {
   REDIS,
   SLACK,
   STRIPE,
+  DIGITAL_OCEAN,
 }
 
 const getActionConfig = (type, action) => {
