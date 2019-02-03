@@ -33,6 +33,10 @@ const TypeFilterOps = {
     QueryOperators.LT,
     QueryOperators.LTE,
     QueryOperators.IN],
+  BOOLEAN: [
+    QueryOperators.EQUALS,
+    QueryOperators.NOT_EQUALS,
+  ],
 }
 
 const checkPropertyTypes = (model = {}) => {
