@@ -43,6 +43,6 @@ export default {
   folders: {
     events: () => getFolder('events'),
     listeners: () => getFolder('listeners'),
-    queries: () => getFolder('queries')
+    queries: () => getFolder('queries'),
   },
 }
