@@ -37,6 +37,12 @@ const TypeFilterOps = {
     QueryOperators.EQUALS,
     QueryOperators.NOT_EQUALS,
   ],
+  ARRAY: [
+    QueryOperators.IN,
+  ],
+  OBJECT: [
+    QueryOperators.EQUALS,
+  ],
 }
 
 const checkPropertyTypes = (model = {}) => {
