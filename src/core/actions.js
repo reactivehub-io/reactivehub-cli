@@ -41,7 +41,7 @@ const createAction = (params) => {
 
   if (created) {
     messages.success(`Action ${chalk.blue.bold(actionId)} on event ${chalk.blue.bold(`${eventId}:${filterId}`)} successfully created!`)
-    messages.info("Check the action template at the YAML file and replace it's properties with the event model parameters (wildcards allowed), check the documentation for more info https://docs.reactivehub.io/guide/events/actions#wildcards ")
+    messages.info('Check the action template at the YAML file and replace its properties with the event model parameters (wildcards allowed). Check the documentation for more info https://docs.reactivehub.io/guide/events/actions#wildcards')
   }
 
   return created
