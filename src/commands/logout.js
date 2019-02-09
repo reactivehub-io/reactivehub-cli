@@ -6,7 +6,7 @@ import questions from './questions/logout'
 const basicLogout = (program) => {
   program
     .command('logout')
-    .description('Log out from Reactivehub')
+    .description('Log out from Reactivehub cli')
     .action(async () => {
       const { logout } = await prompt(questions.logoutQuestions)
 

@@ -20,7 +20,6 @@ const createFile = ({ serviceAccountId, id, scope }) => {
   const listenerFolder = config.folders.queries()
   let folderPath = `${listenerFolder}`
   if (scope && scope !== '') folderPath = `${folderPath}/${scope}`
-  console.log(folderPath)
 
   const yamlPayload = {
     id,
