@@ -18,6 +18,28 @@ const CREATE_ISSUE = {
   questions: () => {},
 }
 
+const CREATE_ISSUE_LINK = {
+  name: 'CREATE_ISSUE_LINK',
+  deploy: (action, eventInfo) => sendAction(eventInfo, { serviceAction: 'CREATE_ISSUE_LINK', ...action }),
+  buildTemplate: () => ({
+    payload: template.issueLink,
+  }),
+  questions: () => {},
+}
+
+const DELETE_ISSUE_LINK = {
+  name: 'DELETE_ISSUE_LINK',
+  deploy: (action, eventInfo) => sendAction(eventInfo, { serviceAction: 'DELETE_ISSUE_LINK', ...action }),
+  buildTemplate: (answers = {}) => ({
+    ...answers,
+  }),
+  questions: () => ({
+    type: 'input',
+    name: 'jiraIssueLinkId',
+    message: 'Enter the JIRA issue link id (wildcards allowed): ',
+  }),
+}
+
 const UPDATE_ISSUE = {
   name: 'UPDATE_ISSUE',
   deploy: (action, eventInfo) => sendAction(eventInfo, { serviceAction: 'UPDATE_ISSUE', ...action }),
@@ -113,4 +135,6 @@ export default {
   DELETE_ISSUE_COMMENT,
   ADD_ISSUE_VOTE,
   DELETE_ISSUE_VOTE,
+  CREATE_ISSUE_LINK,
+  DELETE_ISSUE_LINK,
 }

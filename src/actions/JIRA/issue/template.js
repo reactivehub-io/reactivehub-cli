@@ -61,4 +61,32 @@ export default {
       ],
     },
   },
+  issueLink: {
+    type: {
+      name: 'Duplicate',
+    },
+    inwardIssue: {
+      key: 'String',
+    },
+    outwardIssue: {
+      key: 'String',
+    },
+    comment: {
+      body: {
+        type: 'doc',
+        version: 1,
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'text',
+                text: 'String',
+              },
+            ],
+          },
+        ],
+      },
+    },
+  },
 }
