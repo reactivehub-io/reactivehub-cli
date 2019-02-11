@@ -9,6 +9,9 @@ import actionsCore from '../core/actions'
 import ServiceAccounts from '../serviceAccounts'
 import Questions from './questions/action'
 import config from '../core/config'
+import listener from '../core/listener'
+
+const { getTriggerModels, loadTriggers } = listener
 
 const checkEvent = (eventId) => {
   if (!event.eventExists(eventId)) {
@@ -103,12 +106,35 @@ const addAction = (program) => {
           { id: actionId, eventId, filterId, type, action, serviceAccountId, async },
         )
       } catch (e) {
-        // console.log(e)
         return false
       }
     })
 }
 
+const addTrigger = (program) => {
+  program
+    .command('add:trigger <triggerEvent> <eventId> <filterId> <actionId>')
+    .description('Add a new trigger to an action')
+    .action(async (triggerEvent, eventId, filterId, actionId) => {
+      try {
+        config.getConfigurationFile()
+        if (!checkEvent(eventId)) return false
+        if (!checkFilter(eventId, filterId)) return false
+        const actionExists = actionsCore.actionExists(eventId, filterId, actionId)
+        if (!actionExists) return false
+        // TODO verificar se triggerEvent (como onSuccess ou onFailure) existe
+        const triggerModels = await getTriggerModels(await loadTriggers())
+
+        actionsCore.createTrigger({ triggerEvent, triggerModels, eventId, filterId, actionId })
+      } catch (e) {
+        console.error(e)
+        return false
+      }
+    })
+}
+
+
 export default {
   addAction,
+  addTrigger,
 }
