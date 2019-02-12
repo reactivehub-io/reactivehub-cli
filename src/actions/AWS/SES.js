@@ -6,7 +6,7 @@ export default {
     name: 'Send Template E-mail',
     action: 'SES_SEND_TEMPLATED_EMAIL',
     deploy: (action, eventInfo) => sendAction(eventInfo, { serviceAction: 'SES_SEND_TEMPLATED_EMAIL', ...action }),
-    buildtemplate: () => ({
+    buildTemplate: () => ({
       Source: null,
       Template: null,
       TemplateData: null,
