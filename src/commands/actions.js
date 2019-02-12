@@ -9,6 +9,9 @@ import actionsCore from '../core/actions'
 import ServiceAccounts from '../serviceAccounts'
 import Questions from './questions/action'
 import config from '../core/config'
+import listener from '../core/listener'
+
+const { getTriggerModels, loadTriggers } = listener
 
 const checkEvent = (eventId) => {
   if (!event.eventExists(eventId)) {
@@ -53,7 +56,7 @@ const actionQuestions = async (actionConfig, { id, eventId, filterId, type, acti
 
     const eventPayloadModel = event.loadModelAsPayload(eventId)
     if (questions) {
-      return prompt(questions(eventPayloadModel))
+      return prompt(questions(eventPayloadModel) || [])
         .then(answers => actionsCore.createAction({
           ...creatActionPayload,
           template: buildTemplate(answers, eventPayloadModel),
@@ -103,12 +106,49 @@ const addAction = (program) => {
           { id: actionId, eventId, filterId, type, action, serviceAccountId, async },
         )
       } catch (e) {
-        // console.log(e)
         return false
       }
     })
 }
 
+const addTrigger = (program) => {
+  program
+    .command('add:trigger <triggerEvent> <eventId> <filterId> <actionId>')
+    .description('Add a new trigger to an action')
+    .action(async (triggerEvent, eventId, filterId, actionId) => {
+      try {
+        config.getConfigurationFile()
+        if (!checkEvent(eventId)) return false
+        if (!checkFilter(eventId, filterId)) return false
+        const actionExists = actionsCore.actionExists(eventId, filterId, actionId)
+        if (!actionExists) return false
+
+        // TODO verificar se triggerEvent (como onSuccess ou onFailure) existe. Vamos ter uma lista de triggers disponíveis?
+        const eventsToBeCalled = await loadTriggers()
+
+        // TODO verificar recursão de eventos -> caso eventsToBeCalled contenha eventId, o que faremos?
+        const triggerModels = await getTriggerModels(eventsToBeCalled)
+
+        const created = actionsCore.createTrigger({ triggerEvent, triggerModels, eventId, filterId, actionId })
+
+        if (created) {
+          const eventIds = eventsToBeCalled.map(e => e.eventId)
+          messages.success(`Trigger created: ${chalk.blue.bold(eventIds)} will be called ` +
+            `under the condition ${chalk.blue.bold(triggerEvent)} ` +
+            `of action action ${chalk.blue.bold(`${actionId}`)} on event ${chalk.blue.bold(`${eventId}:${filterId}`)}.`)
+          // messages.info('Check the action template at the YAML file and replace its ') // TODO add next actions tip pointing to documentation
+        }
+
+        return created
+      } catch (e) {
+        console.error(e)
+        return false
+      }
+    })
+}
+
+
 export default {
   addAction,
+  addTrigger,
 }

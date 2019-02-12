@@ -1,6 +1,6 @@
 {
   "name": "@reactivehub/cli",
-  "version": "1.1.13",
+  "version": "1.2.3",
   "description": "Event Cli Tols",
   "main": "index.js",
   "preferGlobal": true,
@@ -12,7 +12,7 @@
     "minor-release": "npm version minor && npm publish",
     "major-release": "npm version major && npm publish",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel src --out-dir dist --source-maps && npm link",
+    "build": "babel src --out-dir dist --source-maps",
     "lint": "eslint src/* --fix"
   },
   "dependencies": {
@@ -37,6 +37,7 @@
     "fs-extra": "^7.0.0",
     "inquirer": "^6.2.0",
     "inquirer-autocomplete-prompt": "^1.0.1",
+    "lodash": "^4.17.11",
     "opn": "^5.4.0",
     "transform-runtime": "0.0.0",
     "yamljs": "^0.3.0"
