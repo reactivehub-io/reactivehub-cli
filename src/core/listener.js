@@ -41,12 +41,17 @@ const createFile = ({ serviceAccountId, type: serviceAccountType, listenerType, 
 const loadTriggers = async (triggers = [], loadedEvents = null) => {
   let newTriggers = triggers
   let eventIds = loadedEvents || await api.getEventIds()
+
   if (!eventIds) {
     messages.info('Could not find deployed events. Deploy your events and run the add:listener trigger command.')
   } else {
     const { eventId } = await prompt(questions.selectEvent(eventIds))
     newTriggers.push({ eventId })
+
     eventIds = eventIds.filter(({ id }) => id !== eventId)
+
+    if (eventIds.length <= 0) return newTriggers
+
     const { addMoreTriggers } = await prompt(questions.addMoreTriggers)
     if (addMoreTriggers) {
       newTriggers = loadTriggers(newTriggers, eventIds)
@@ -117,4 +122,6 @@ export default {
   addListener,
   getListenersFileMaps,
   prepareDeploy,
+  loadTriggers,
+  getTriggerModels,
 }

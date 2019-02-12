@@ -23,6 +23,7 @@ try {
   event.createEvent(program)
   filter.createFilter(program)
   actions.addAction(program)
+  actions.addTrigger(program)
   login.basicLogin(program)
   login.loggedStatus(program)
   logout.basicLogout(program)

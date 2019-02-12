@@ -1,4 +1,5 @@
 import chalk from 'chalk'
+import { uniqWith, isEqual } from 'lodash'
 import messages from '../messages'
 import filter from '../core/filter'
 import event from '../core/event'
@@ -10,6 +11,19 @@ const folder = 'events'
 const actionExists = (eventId, filterId, actionId) => {
   const { actions = [] } = getFilter(eventId, filterId) || {}
   return actions && actions.filter(({ id }) => id === actionId).length > 0
+}
+
+const appendTrigger = (action, triggerEvent, triggerModels) => {
+  const modifiedAction = action
+
+  // is there a way to refactor this?
+  if (Array.isArray(modifiedAction[triggerEvent])) {
+    const triggerEventList = [...modifiedAction[triggerEvent], ...triggerModels]
+    modifiedAction[triggerEvent] = uniqWith(triggerEventList, isEqual)
+  } else {
+    modifiedAction[triggerEvent] = triggerModels
+  }
+  return modifiedAction
 }
 
 const createAction = (params) => {
@@ -47,8 +61,39 @@ const createAction = (params) => {
   return created
 }
 
+const createTrigger = (params) => {
+  const { triggerEvent, triggerModels, eventId, filterId, actionId } = params
+
+  const eventPayload = event.loadEvent(folder, eventId)
+
+  const filterConfig = eventPayload.filters.find(({ id }) => id === filterId)
+  if (!filterConfig.actions) filterConfig.actions = []
+
+  const foundAction = filterConfig.actions.find(action => action.id === actionId)
+
+  if (foundAction) {
+    filterConfig.actions = filterConfig.actions.map((action) => {
+      if (action.id === actionId) {
+        const modifiedAction = appendTrigger(action, triggerEvent, triggerModels)
+        return modifiedAction
+      }
+      return action
+    })
+  } else {
+    messages.error(`Could not find action ${chalk.blueBright(actionId)}!`)
+    throw new Error('Action not found. Run "rhub add:action" to add a new action.')
+  }
+
+  eventPayload.filters = eventPayload.filters.map((filterMap) => {
+    if (filterMap.id === filterId) return filterConfig
+    return filterMap
+  })
+
+  return yaml.create(folder, eventId, eventPayload)
+}
 
 export default {
   createAction,
   actionExists,
+  createTrigger,
 }
