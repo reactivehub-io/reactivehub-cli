@@ -134,12 +134,11 @@ const addTrigger = (program) => {
         if (!actionExists) return false
         const isValidTrigger = checkTrigger(triggerEvent)
         if (!isValidTrigger) {
-          printsInvalidTriggerError();
+          printsInvalidTriggerError()
           return false
         }
-        // TODO verificar se triggerEvent (como onSuccess ou onFailure) existe. Vamos ter uma lista de triggers disponíveis?
-        const eventsToBeCalled = await loadTriggers()
 
+        const eventsToBeCalled = await loadTriggers()
         // TODO verificar recursão de eventos -> caso eventsToBeCalled contenha eventId, o que faremos?
         const triggerModels = await getTriggerModels(eventsToBeCalled)
 
