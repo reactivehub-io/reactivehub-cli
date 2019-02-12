@@ -13,6 +13,16 @@ import listener from '../core/listener'
 
 const { getTriggerModels, loadTriggers } = listener
 
+const validTriggers = ['onSuccess', 'onFailure']
+
+const checkTrigger = trigger => validTriggers.includes(trigger)
+
+function printsInvalidTriggerError() {
+  messages.error('Inexistent trigger. Please specify a valid trigger.');
+  const availableTriggersInfo = validTriggers.map(trigger => ` ${chalk.blue.bold(`${trigger}`)}`);
+  messages.info(`Available triggers are:${availableTriggersInfo}`);
+}
+
 const checkEvent = (eventId) => {
   if (!event.eventExists(eventId)) {
     messages.error(`${chalk.blue.bold(eventId)} does not exist!`)
@@ -122,7 +132,11 @@ const addTrigger = (program) => {
         if (!checkFilter(eventId, filterId)) return false
         const actionExists = actionsCore.actionExists(eventId, filterId, actionId)
         if (!actionExists) return false
-
+        const isValidTrigger = checkTrigger(triggerEvent)
+        if (!isValidTrigger) {
+          printsInvalidTriggerError();
+          return false
+        }
         // TODO verificar se triggerEvent (como onSuccess ou onFailure) existe. Vamos ter uma lista de triggers disponíveis?
         const eventsToBeCalled = await loadTriggers()
 
