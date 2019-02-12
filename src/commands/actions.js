@@ -122,10 +122,20 @@ const addTrigger = (program) => {
         if (!checkFilter(eventId, filterId)) return false
         const actionExists = actionsCore.actionExists(eventId, filterId, actionId)
         if (!actionExists) return false
-        // TODO verificar se triggerEvent (como onSuccess ou onFailure) existe
-        const triggerModels = await getTriggerModels(await loadTriggers())
+        // TODO verificar recursão de eventos
+        // TODO verificar se triggerEvent (como onSuccess ou onFailure) existe. Vamos ter uma lista de triggers disponíveis?
+        const eventsToBeCalled = await loadTriggers()
+        const triggerModels = await getTriggerModels(eventsToBeCalled)
 
-        actionsCore.createTrigger({ triggerEvent, triggerModels, eventId, filterId, actionId })
+        const created = actionsCore.createTrigger({ triggerEvent, triggerModels, eventId, filterId, actionId })
+
+        if (created) {
+          const eventIds = eventsToBeCalled.map(e => e.eventId)
+          messages.success(`Trigger created: ${chalk.blue.bold(eventIds)} will be called ` +
+            `under the condition ${chalk.blue.bold(triggerEvent)} ` +
+            `of action action ${chalk.blue.bold(`${actionId}`)} on event ${chalk.blue.bold(`${eventId}:${filterId}`)}.`)
+          // messages.info('Check the action template at the YAML file and replace its ') // TODO add next actions tip pointing to documentation
+        }
       } catch (e) {
         console.error(e)
         return false

@@ -1,4 +1,5 @@
 import chalk from 'chalk'
+import { uniqWith, isEqual } from 'lodash'
 import messages from '../messages'
 import filter from '../core/filter'
 import event from '../core/event'
@@ -10,6 +11,19 @@ const folder = 'events'
 const actionExists = (eventId, filterId, actionId) => {
   const { actions = [] } = getFilter(eventId, filterId) || {}
   return actions && actions.filter(({ id }) => id === actionId).length > 0
+}
+
+const appendTrigger = (action, triggerEvent, triggerModels) => {
+  const modifiedAction = action
+
+  // is there a way to refactor this?
+  if (Array.isArray(modifiedAction[triggerEvent])) {
+    const triggerEventList = [...modifiedAction[triggerEvent], ...triggerModels]
+    modifiedAction[triggerEvent] = uniqWith(triggerEventList, isEqual)
+  } else {
+    modifiedAction[triggerEvent] = triggerModels
+  }
+  return modifiedAction
 }
 
 const createAction = (params) => {
@@ -60,8 +74,7 @@ const createTrigger = (params) => {
   if (foundAction) {
     filterConfig.actions = filterConfig.actions.map((action) => {
       if (action.id === actionId) {
-        const modifiedAction = action
-        modifiedAction[triggerEvent] = triggerModels
+        const modifiedAction = appendTrigger(action, triggerEvent, triggerModels)
         return modifiedAction
       }
       return action
@@ -76,16 +89,8 @@ const createTrigger = (params) => {
     return filterMap
   })
 
-  const created = yaml.create(folder, eventId, eventPayload)
-
-  if (created) {
-    messages.success(`Trigger ${chalk.blue.bold(triggerEvent)} on event ${chalk.blue.bold(`${eventId}:${filterId}`)} successfully created!`)
-    // messages.info('Check the action template at the YAML file and replace its ') // TODO add next actions tip
-  }
-
-  return created
+  return yaml.create(folder, eventId, eventPayload)
 }
-
 
 export default {
   createAction,
