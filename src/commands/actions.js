@@ -138,6 +138,8 @@ const addTrigger = (program) => {
             `of action action ${chalk.blue.bold(`${actionId}`)} on event ${chalk.blue.bold(`${eventId}:${filterId}`)}.`)
           // messages.info('Check the action template at the YAML file and replace its ') // TODO add next actions tip pointing to documentation
         }
+
+        return created
       } catch (e) {
         console.error(e)
         return false
