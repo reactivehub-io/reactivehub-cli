@@ -38,7 +38,7 @@ const createFile = ({ serviceAccountId, type: serviceAccountType, listenerType, 
   return created
 }
 
-const loadTriggers = async (triggers = [], loadedEvents = null) => {
+const selectAvailableTriggers = async (triggers = [], loadedEvents = null) => {
   let newTriggers = triggers
   let eventIds = loadedEvents || await api.getEventIds()
 
@@ -54,7 +54,7 @@ const loadTriggers = async (triggers = [], loadedEvents = null) => {
 
     const { addMoreTriggers } = await prompt(questions.addMoreTriggers)
     if (addMoreTriggers) {
-      newTriggers = loadTriggers(newTriggers, eventIds)
+      newTriggers = selectAvailableTriggers(newTriggers, eventIds)
     }
   }
   return newTriggers
@@ -85,7 +85,7 @@ const addListener = async (type) => {
     if (addTrigger) {
       const { eventConfirm } = await prompt(questions.confirmTriggeredEvents)
       if (eventConfirm) {
-        triggers = await getTriggerModels(await loadTriggers())
+        triggers = await getTriggerModels(await selectAvailableTriggers())
       }
     }
 
@@ -122,6 +122,6 @@ export default {
   addListener,
   getListenersFileMaps,
   prepareDeploy,
-  loadTriggers,
+  selectAvailableTriggers,
   getTriggerModels,
 }

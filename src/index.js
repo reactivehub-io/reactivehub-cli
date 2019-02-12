@@ -3,6 +3,7 @@
 import event from './commands/event'
 import filter from './commands/filter'
 import actions from './commands/actions'
+import triggers from './commands/triggers'
 import login from './commands/login'
 import logout from './commands/logout'
 import deploy from './commands/deploy'
@@ -23,7 +24,7 @@ try {
   event.createEvent(program)
   filter.createFilter(program)
   actions.addAction(program)
-  actions.addTrigger(program)
+  triggers.addTrigger(program)
   login.basicLogin(program)
   login.loggedStatus(program)
   logout.basicLogout(program)
