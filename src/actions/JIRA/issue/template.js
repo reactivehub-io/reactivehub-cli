@@ -7,12 +7,25 @@ export default {
       resolution: {
         name: 'String',
       },
-      project:
-       {
-         key: 'String',
-       },
+      project: {
+        key: 'String',
+      },
       summary: 'String',
-      description: 'String',
+      description: {
+        type: 'doc',
+        version: 1,
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'text',
+                text: 'String',
+              },
+            ],
+          },
+        ],
+      },
     },
     transition: {
       id: 'String',
