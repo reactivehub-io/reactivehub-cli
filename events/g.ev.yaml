@@ -31,3 +31,27 @@ filters:
         template:
           jiraFilterId: idum
           jiraPermissionId: idois
+      -
+        id: create-issue
+        async: false
+        type: JIRA
+        action: CREATE_ISSUE
+        operation: null
+        serviceAccountId: reactivehub-jira
+        template:
+          payload:
+            fields:
+              assignee:
+                name: String
+              resolution:
+                name: String
+              project:
+                key: String
+              summary: String
+              description: String
+            transition:
+              id: String
+            properties:
+              -
+                key: String
+                value: String

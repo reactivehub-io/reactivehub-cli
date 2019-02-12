@@ -1,28 +1,5 @@
 export default {
   issue: {
-    update: {
-      comment: [
-        {
-          add: {
-            body: {
-              type: 'doc',
-              version: 1,
-              content: [
-                {
-                  type: 'paragraph',
-                  content: [
-                    {
-                      type: 'text',
-                      text: 'String',
-                    },
-                  ],
-                },
-              ],
-            },
-          },
-        },
-      ],
-    },
     fields: {
       assignee: {
         name: 'String',
@@ -30,6 +7,12 @@ export default {
       resolution: {
         name: 'String',
       },
+      project:
+       {
+         key: 'String',
+       },
+      summary: 'String',
+      description: 'String',
     },
     transition: {
       id: 'String',

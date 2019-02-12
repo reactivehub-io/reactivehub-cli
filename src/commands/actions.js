@@ -56,7 +56,7 @@ const actionQuestions = async (actionConfig, { id, eventId, filterId, type, acti
 
     const eventPayloadModel = event.loadModelAsPayload(eventId)
     if (questions) {
-      return prompt(questions(eventPayloadModel))
+      return prompt(questions(eventPayloadModel) || [])
         .then(answers => actionsCore.createAction({
           ...creatActionPayload,
           template: buildTemplate(answers, eventPayloadModel),
