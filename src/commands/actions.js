@@ -122,9 +122,11 @@ const addTrigger = (program) => {
         if (!checkFilter(eventId, filterId)) return false
         const actionExists = actionsCore.actionExists(eventId, filterId, actionId)
         if (!actionExists) return false
-        // TODO verificar recursão de eventos
+
         // TODO verificar se triggerEvent (como onSuccess ou onFailure) existe. Vamos ter uma lista de triggers disponíveis?
         const eventsToBeCalled = await loadTriggers()
+
+        // TODO verificar recursão de eventos -> caso eventsToBeCalled contenha eventId, o que faremos?
         const triggerModels = await getTriggerModels(eventsToBeCalled)
 
         const created = actionsCore.createTrigger({ triggerEvent, triggerModels, eventId, filterId, actionId })
