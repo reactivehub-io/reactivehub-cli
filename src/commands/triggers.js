@@ -30,8 +30,10 @@ const addTrigger = (program) => {
         if (!actionExists) return false
         if (!checks.checkTrigger(triggerEvent)) return false
 
-        const eventsToBeCalled = await selectAvailableTriggers()
-        // TODO verificar recursão de eventos -> caso eventsToBeCalled contenha eventId, o que faremos?
+        const eventsToBeCalled = await selectAvailableTriggers({ ignoredEvents: [eventId] })
+
+        if (eventsToBeCalled.length === 0) return false
+
         const triggerModels = await getTriggerModels(eventsToBeCalled)
 
         const created = actionsCore.createTrigger({ triggerEvent, triggerModels, eventId, filterId, actionId })
