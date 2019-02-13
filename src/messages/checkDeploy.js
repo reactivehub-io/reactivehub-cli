@@ -17,7 +17,7 @@ export default {
     console.log('')
   },
   startingDeploy: (type = 'all') => messages.info(`Deploy ${type} started.`),
-  eventDeploySuccess: (eventId, type='Event') => messages.success(`${type} "${eventId}" successfully deployed.`),
+  eventDeploySuccess: (eventId, type = 'Event') => messages.success(`${type} "${eventId}" successfully deployed.`),
   listenerDeploySuccess: id => messages.success(`Listener "${id}" successfully deployed.`),
   deployFinished: (total, types = 'events') => messages.success(`${total} ${types} successfully deployed.`),
   queryErrors: () => messages.error('Could not deploy your queries; This is not a problem with Reactivehub services, check the log for more info'),
