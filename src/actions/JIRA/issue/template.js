@@ -1,34 +1,30 @@
 export default {
   issue: {
-    update: {
-      comment: [
-        {
-          add: {
-            body: {
-              type: 'doc',
-              version: 1,
-              content: [
-                {
-                  type: 'paragraph',
-                  content: [
-                    {
-                      type: 'text',
-                      text: 'String',
-                    },
-                  ],
-                },
-              ],
-            },
-          },
-        },
-      ],
-    },
     fields: {
       assignee: {
         name: 'String',
       },
       resolution: {
         name: 'String',
+      },
+      project: {
+        key: 'String',
+      },
+      summary: 'String',
+      description: {
+        type: 'doc',
+        version: 1,
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'text',
+                text: 'String',
+              },
+            ],
+          },
+        ],
       },
     },
     transition: {
