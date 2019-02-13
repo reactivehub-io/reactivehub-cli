@@ -16,6 +16,9 @@ jobs:
       - attach_workspace:
           at: ~/repo
       - run:
+          name: Build
+          command: npm run build
+      - run:
           name: Authenticate with registry
           command: echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > ~/repo/.npmrc
       - run:
@@ -27,10 +30,6 @@ workflows:
   test-deploy:
     jobs:
       - deploy:
-          requires:
-            - test
           filters:
-            tags:
-              only: /^v.*/
             branches:
-              ignore: /.*/
+              only: master
