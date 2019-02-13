@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-
+import chalk from 'chalk'
 import event from './commands/event'
 import filter from './commands/filter'
 import actions from './commands/actions'
@@ -33,5 +33,5 @@ try {
   query.init(program)
   program.parse(process.argv)
 } catch (e) {
-  console.log('Error processing your request', e)
+  console.log(chalk.red('Error processing your request'), e)
 }
