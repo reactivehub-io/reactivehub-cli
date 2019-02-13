@@ -24,7 +24,7 @@ try {
   event.createEvent(program)
   filter.createFilter(program)
   actions.addAction(program)
-  triggers.addTrigger(program)
+  triggers.addActionTrigger(program)
   login.basicLogin(program)
   login.loggedStatus(program)
   logout.basicLogout(program)

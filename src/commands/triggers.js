@@ -17,7 +17,11 @@ const addListener = (program) => {
     })
 }
 
-const addTrigger = (program) => {
+/**
+ * Adds a trigger (another event) to be called in the case of success or failure of
+ * an event action.
+ */
+const addActionTrigger = (program) => {
   program
     .command('add:trigger <triggerEvent> <eventId> <filterId> <actionId>')
     .description('Add a new trigger to an action')
@@ -58,5 +62,5 @@ export default {
   init: (program) => {
     addListener(program)
   },
-  addTrigger,
+  addActionTrigger,
 }
