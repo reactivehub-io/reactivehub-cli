@@ -7,6 +7,7 @@ import questions from '../commands/questions/listener'
 import prompt from '../libs/inquirer'
 import config from './config'
 import yaml from './yaml'
+import validators from './listeners/validator'
 
 const getAvailableListenerTypes = async (type) => {
   const types = await api.getAvailableListenerTypes(type) || []
@@ -75,6 +76,10 @@ const addListener = async (type) => {
     if (!ServiceAccounts.checkSeviceAccounts(serviceAccounts, type)) return false
 
     const { serviceAccountId, listenerType } = await prompt(questions.create(serviceAccounts, availableListeners))
+
+    const isEnabled = await validators.checkListenerEnabled(serviceAccountId, type, serviceAccounts)
+
+    if (!isEnabled) return false
 
     const model = await api.getListenerModel(type, listenerType)
 
