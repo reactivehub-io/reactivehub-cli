@@ -39,12 +39,23 @@ const createFile = ({ serviceAccountId, type: serviceAccountType, listenerType, 
   return created
 }
 
-const loadTriggers = async (triggers = [], loadedEvents = null) => {
+const selectAvailableTriggers = async ({ triggers = [], loadedEvents = null, ignoredEvents: ignoredEvents = [] } = {}) => {
   let newTriggers = triggers
   let eventIds = loadedEvents || await api.getEventIds()
 
+  if (ignoredEvents.length > 0) {
+    const filteredEvents = eventIds.filter(e => !ignoredEvents.includes(e.id))
+    if (filteredEvents.length === 0 && filteredEvents.length !== eventIds.length) {
+      const ignoredEventNames = ignoredEvents.map(e => `${chalk.blue.bold(`${e}`)}`)
+      messages.info(`Could not find deployed events different than ${ignoredEventNames}. ` +
+      'Deploy different events and try again.')
+      return filteredEvents
+    }
+    eventIds = filteredEvents
+  }
+
   if (!eventIds) {
-    messages.info('Could not find deployed events. Deploy your events and run the add:listener trigger command.')
+    messages.info('Could not find deployed events. Deploy your events and try again.')
   } else {
     const { eventId } = await prompt(questions.selectEvent(eventIds))
     newTriggers.push({ eventId })
@@ -55,7 +66,7 @@ const loadTriggers = async (triggers = [], loadedEvents = null) => {
 
     const { addMoreTriggers } = await prompt(questions.addMoreTriggers)
     if (addMoreTriggers) {
-      newTriggers = loadTriggers(newTriggers, eventIds)
+      newTriggers = selectAvailableTriggers({ triggers: newTriggers, loadedEvents })
     }
   }
   return newTriggers
@@ -90,7 +101,7 @@ const addListener = async (type) => {
     if (addTrigger) {
       const { eventConfirm } = await prompt(questions.confirmTriggeredEvents)
       if (eventConfirm) {
-        triggers = await getTriggerModels(await loadTriggers())
+        triggers = await getTriggerModels(await selectAvailableTriggers())
       }
     }
 
@@ -127,6 +138,6 @@ export default {
   addListener,
   getListenersFileMaps,
   prepareDeploy,
-  loadTriggers,
+  selectAvailableTriggers,
   getTriggerModels,
 }

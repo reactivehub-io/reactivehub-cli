@@ -11,7 +11,7 @@
     "patch-release": "npm version patch && npm publish",
     "minor-release": "npm version minor && npm publish",
     "major-release": "npm version major && npm publish",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"no test specified\"",
     "build": "babel src --out-dir dist --source-maps",
     "lint": "eslint src/* --fix"
   },

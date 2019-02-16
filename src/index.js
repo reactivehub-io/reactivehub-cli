@@ -1,8 +1,9 @@
 #!/usr/bin/env node
-
+import chalk from 'chalk'
 import event from './commands/event'
 import filter from './commands/filter'
 import actions from './commands/actions'
+import triggers from './commands/triggers'
 import login from './commands/login'
 import logout from './commands/logout'
 import deploy from './commands/deploy'
@@ -23,7 +24,7 @@ try {
   event.createEvent(program)
   filter.createFilter(program)
   actions.addAction(program)
-  actions.addTrigger(program)
+  triggers.addActionTrigger(program)
   login.basicLogin(program)
   login.loggedStatus(program)
   logout.basicLogout(program)
@@ -32,5 +33,5 @@ try {
   query.init(program)
   program.parse(process.argv)
 } catch (e) {
-  console.log('Error processing your request', e)
+  console.log(chalk.red('Error processing your request'), e)
 }
