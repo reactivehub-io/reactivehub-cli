@@ -8,9 +8,9 @@
     "rhub": "./dist/index.js"
   },
   "scripts": {
-    "patch-release": "npm version patch && npm publish",
-    "minor-release": "npm version minor && npm publish",
-    "major-release": "npm version major && npm publish",
+    "patch-release": "npm run build && npm version patch && npm publish",
+    "minor-release": "npm run build && npm version minor && npm publish",
+    "major-release": "npm run build && npm version major && npm publish",
     "test": "echo \"no test specified\"",
     "build": "babel src --out-dir dist --source-maps",
     "lint": "eslint src/* --fix"
