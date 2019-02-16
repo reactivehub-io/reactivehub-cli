@@ -75,21 +75,13 @@ const deployEvent = async (eventName) => {
   await Promise.all(filterPromises)
 }
 
-const recursiveDeploy = async (events, idx = 0) => {
-  const eventModel = events[idx]
-  if (eventModel) {
-    await deployEvent(eventModel)
-    return recursiveDeploy(events, idx + 1)
-  }
-  return true
-}
-
 const deployEvents = async () => {
   const testStatus = await check.run({ isDeploy: true })
   if (testStatus) {
     messages.startingDeploy('EVENTS')
     const events = getEventsInFolder()
-    await recursiveDeploy(events)
+    const deployPromises = events.map(eventModel => deployEvent(eventModel))
+    await Promise.all(deployPromises)
     messages.deployFinished(events.length)
     return true
   }
