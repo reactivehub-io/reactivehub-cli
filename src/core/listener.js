@@ -34,7 +34,7 @@ const createFile = ({ serviceAccountId, type: serviceAccountType, listenerType, 
     source_model: model,
   }
 
-  const created = yaml.create(folderPath, listenerType, yamlPayload)
+  const created = yaml.create(folderPath, listenerType.replace(/:/g, '.'), yamlPayload)
   if (created) messages.success(`${serviceAccountType} listener ${chalk.blue.bold(`${serviceAccountId}.${listenerType}`)} successfully created!`)
   return created
 }

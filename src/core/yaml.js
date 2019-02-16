@@ -4,7 +4,7 @@ import messages from '../messages'
 import file from '../libs/file'
 
 const getFileName = (fileName) => {
-  const hasYamlInName = fileName.match('.yaml') 
+  const hasYamlInName = fileName.match('.yaml')
   const name = !hasYamlInName ? `${fileName}.yaml` : fileName
   return name
 }
