@@ -4,6 +4,7 @@ import BATCH from './batches'
 import CAMPAIGN from './campaign'
 import SITES from './sites'
 import FILES from './files'
+import LANDING_PAGES from './landingpages'
 
 export default {
   LIST,
@@ -12,4 +13,5 @@ export default {
   CAMPAIGN,
   SITES,
   FILES,
+  LANDING_PAGES,
 }
