@@ -1,4 +1,4 @@
-import LIST from './list'
+import LIST from './lists'
 
 export default {
   LIST,
