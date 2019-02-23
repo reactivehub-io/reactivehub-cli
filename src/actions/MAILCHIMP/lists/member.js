@@ -1,5 +1,5 @@
-import ObjectUtils from '../../libs/objects'
-import { sendAction } from '../../services/api'
+import ObjectUtils from '../../../libs/objects'
+import { sendAction } from '../../../services/api'
 
 const emailHolderQuestion = model => ({
   type: 'autocomplete',
