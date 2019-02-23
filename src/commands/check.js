@@ -28,7 +28,7 @@ const testAll = (program) => {
 
 const checkEvent = (eventId) => {
   if (!event.eventExists(eventId)) {
-    messages.error(`${chalk.blue.bold(eventId)} does not exist!`)
+    messages.error(`Event ${chalk.blue.bold(eventId)} does not exist!`)
     return false
   }
   return true

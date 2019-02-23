@@ -3,6 +3,7 @@ import config from '../core/config'
 import listeners from '../core/listener'
 import messages from '../messages'
 import actionsCore from '../core/actions'
+import prompt from '../libs/inquirer'
 import checks from './check'
 
 const { getTriggerModels, selectAvailableTriggers } = listeners
@@ -17,22 +18,49 @@ const addListener = (program) => {
     })
 }
 
+/* eslint-disable no-param-reassign */
+const checkNullParameter = async (parameter, inputMessage, checkValidnessFunction) => {
+  if (!parameter) {
+    // TODO move to questions file
+    ({ id: parameter } = await prompt({
+      type: 'input',
+      name: 'id',
+      message: inputMessage,
+    }))
+    if (!checkValidnessFunction(parameter)) parameter = checkNullParameter(null, inputMessage, checkValidnessFunction)
+  }
+  return parameter
+}
+
+const checkNullParameters = async (triggerEvent, eventId, filterId, actionId) => {
+  triggerEvent = await checkNullParameter(triggerEvent, 'Please enter a trigger event:', checks.checkTrigger)
+  eventId = await checkNullParameter(eventId, 'Please enter a valid event id (in the form ofon eventGroup.eventId):', checks.checkEvent)
+  // filters need more parameters, check on how to proceed
+  // filterId = await checkNullParameter(filterId, 'Please enter a valid filterId', checks.checkFilter)
+  // triggerEvent = checkNullParameter(triggerEvent, 'please', )
+  return { triggerEvent, eventId, filterId, actionId }
+}
+
 /**
  * Adds a trigger (another event) to be called in the case of success or failure of
  * an event action.
  */
 const addActionTrigger = (program) => {
   program
-    .command('add:trigger <triggerEvent> <eventId> <filterId> <actionId>')
+    .command('add:trigger [_triggerEvent] [_eventId] [_filterId] [_actionId]')
     .description('Add a new trigger to an action')
-    .action(async (triggerEvent, eventId, filterId, actionId) => {
+    .action(async (_triggerEvent, _eventId, _filterId, _actionId) => {
       try {
         config.getConfigurationFile()
+
+        const { triggerEvent, eventId, filterId, actionId } = await checkNullParameters(_triggerEvent, _eventId, _filterId, _actionId)
+
+        if (!checks.checkTrigger(triggerEvent)) return false
         if (!checks.checkEvent(eventId)) return false
         if (!checks.checkFilter(eventId, filterId)) return false
+
         const actionExists = actionsCore.actionExists(eventId, filterId, actionId)
         if (!actionExists) return false
-        if (!checks.checkTrigger(triggerEvent)) return false
 
         const eventsToBeCalled = await selectAvailableTriggers({ ignoredEvents: [eventId] })
 
