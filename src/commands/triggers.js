@@ -30,13 +30,13 @@ const checkNullParameters = async (triggerEvent, eventId, filterId, actionId) =>
   }
 
   if (!filterId) {
-    const filterIdQuestion = questions.enterFilterId[0]
+    const filterIdQuestion = questions.enterFilterId
     filterIdQuestion.validate = input => !input || checks.checkFilter(eventId, input);
     ({ id: filterId } = await prompt(filterIdQuestion))
   }
 
   if (!actionId) {
-    const actionIdQuestion = questions.enterActionId[0]
+    const actionIdQuestion = questions.enterActionId
     actionIdQuestion.validate = input => !input || checks.checkAction(eventId, filterId, input);
     ({ id: actionId } = await prompt(questions.enterActionId))
   }
