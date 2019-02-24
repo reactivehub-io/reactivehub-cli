@@ -5,6 +5,7 @@ import messages from '../messages'
 import actionsCore from '../core/actions'
 import prompt from '../libs/inquirer'
 import checks from './check'
+import questions from './questions/triggers'
 
 const { getTriggerModels, selectAvailableTriggers } = listeners
 
@@ -19,68 +20,25 @@ const addListener = (program) => {
 }
 
 /* eslint-disable no-param-reassign */
-/* eslint-disable no-await-in-loop */
-// const checkNullParameter = async (parameter, inputMessage, checkValidnessFunction, validnessParams) => {
-//   if (!parameter) {
-//     // TODO move to questions file
-//     ({ id: parameter } = await prompt({
-//       type: 'input',
-//       name: 'id',
-//       message: inputMessage,
-//     }))
-//     if (!checkValidnessFunction(...validnessParams)) parameter = checkNullParameter(null, inputMessage, checkValidnessFunction, validnessParams)
-//   }
-//   return parameter
-// }
-
 const checkNullParameters = async (triggerEvent, eventId, filterId, actionId) => {
-  // TODO: refactor
   if (!triggerEvent) {
-    for (;;) {
-      // TODO move to questions file
-      ({ id: triggerEvent } = await prompt({
-        type: 'input',
-        name: 'id',
-        message: 'Please enter a trigger event:',
-      }))
-      if (checks.checkTrigger(triggerEvent)) break
-    }
+    ({ id: triggerEvent } = await prompt(questions.enterTriggerEvent))
   }
 
   if (!eventId) {
-    for (;;) {
-      // TODO move to questions file
-      ({ id: eventId } = await prompt({
-        type: 'input',
-        name: 'id',
-        message: 'Please enter a valid event id (in the form form groupName.eventId):',
-      }))
-      if (checks.checkEvent(eventId)) break
-    }
+    ({ id: eventId } = await prompt(questions.enterEventId))
   }
 
   if (!filterId) {
-    for (;;) {
-      // TODO move to questions file
-      ({ id: filterId } = await prompt({
-        type: 'input',
-        name: 'id',
-        message: 'Please enter a valid filter id:',
-      }))
-      if (checks.checkFilter(eventId, filterId)) break
-    }
+    const filterIdQuestion = questions.enterFilterId[0]
+    filterIdQuestion.validate = input => !input || checks.checkFilter(eventId, input);
+    ({ id: filterId } = await prompt(filterIdQuestion))
   }
 
   if (!actionId) {
-    for (;;) {
-      // TODO move to questions file
-      ({ id: actionId } = await prompt({
-        type: 'input',
-        name: 'id',
-        message: 'Please enter a valid action id:',
-      }))
-      if (actionsCore.actionExists(eventId, filterId, actionId)) break // TODO change it to behave like check.checkFilters functions
-    }
+    const actionIdQuestion = questions.enterActionId[0]
+    actionIdQuestion.validate = input => !input || checks.checkAction(eventId, filterId, input);
+    ({ id: actionId } = await prompt(questions.enterActionId))
   }
 
   return { triggerEvent, eventId, filterId, actionId }
@@ -104,7 +62,7 @@ const addActionTrigger = (program) => {
         if (!checks.checkEvent(eventId)) return false
         if (!checks.checkFilter(eventId, filterId)) return false
 
-        const actionExists = actionsCore.actionExists(eventId, filterId, actionId)
+        const actionExists = checks.checkAction(eventId, filterId, actionId)
         if (!actionExists) return false
 
         const eventsToBeCalled = await selectAvailableTriggers({ ignoredEvents: [eventId] })
