@@ -44,12 +44,6 @@ const gatherInputParameters = async (triggerEvent, eventId, filterId, actionId) 
   return { triggerEvent, eventId, filterId, actionId }
 }
 
-const isAnyUndefined = (args) => {
-  args.forEach(a => console.log(a))
-  console.log(args.includes(null) )
-  return args.includes(undefined)
-}
-
 /**
  * Adds a trigger (another event) to be called in the case of success or failure of
  * an event action.
@@ -61,9 +55,8 @@ const addActionTrigger = (program) => {
     .action(async (triggerEvent, eventId, filterId, actionId) => {
       try {
         config.getConfigurationFile()
-        // const a = [triggerEvent, eventId, filterId, actionId]
 
-        if (isAnyUndefined([triggerEvent, eventId, filterId, actionId])) {
+        if ([triggerEvent, eventId, filterId, actionId].includes(undefined)) {
           ({ triggerEvent, eventId, filterId, actionId } = await gatherInputParameters(triggerEvent, eventId, filterId, actionId))
         }
 

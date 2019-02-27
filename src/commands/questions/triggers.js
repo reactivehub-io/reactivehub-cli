@@ -1,17 +1,18 @@
 import checks from '../check'
+import event from '../../core/event'
 
 const enterTriggerEvent = {
   type: 'list',
   name: 'id',
-  message: 'Please enter a type of trigger event:',
+  message: 'Please choose a type of trigger event:',
   choices: checks.validTriggers,
 }
 
 const enterEventId = {
-  type: 'input',
+  type: 'list',
   name: 'id',
-  message: 'Please enter a valid event id (in the form form groupName.eventId):',
-  validate: input => !input || checks.checkEvent(input),
+  message: 'Please choose the event id related to the trigger:',
+  choices: event.getEventsInFolder(),
 }
 
 const enterFilterId = {
