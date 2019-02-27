@@ -32,13 +32,13 @@ const gatherInputParameters = async (triggerEvent, eventId, filterId, actionId) 
 
   if (!filterId) {
     const filterIdQuestion = questions.enterFilterId
-    filterIdQuestion.choices = filter.getAllFilters(eventId);
+    filterIdQuestion.choices = filter.getAllFilters(eventId).map(i => i.id);
     ({ id: filterId } = await prompt(filterIdQuestion))
   }
 
   if (!actionId) {
     const actionIdQuestion = questions.enterActionId
-    actionIdQuestion.validate = input => !input || checks.checkAction(eventId, filterId, input);
+    actionIdQuestion.choices = actionsCore.getActions(eventId, filterId).map(i => i.id);
     ({ id: actionId } = await prompt(questions.enterActionId))
   }
 

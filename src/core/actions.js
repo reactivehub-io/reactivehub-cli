@@ -8,8 +8,10 @@ import yaml from './yaml'
 const { getFilter } = filter
 const folder = 'events'
 
+const getActions = (eventId, filterId) => getFilter(eventId, filterId).actions || []
+
 const actionExists = (eventId, filterId, actionId) => {
-  const { actions = [] } = getFilter(eventId, filterId) || {}
+  const actions = getActions(eventId, filterId)
   return actions && actions.filter(({ id }) => id === actionId).length > 0
 }
 
@@ -96,4 +98,5 @@ export default {
   createAction,
   actionExists,
   createTrigger,
+  getActions,
 }

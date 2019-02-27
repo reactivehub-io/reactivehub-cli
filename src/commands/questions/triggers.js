@@ -25,7 +25,7 @@ const enterFilterId = {
 const enterActionId = {
   type: 'list',
   name: 'id',
-  message: 'Please enter a valid action id:',
+  message: 'Please choose the action which will call the trigger:',
   choices: undefined, // depends on filterId option
 }
 

@@ -8,12 +8,11 @@ const folder = 'events'
 
 const getAllFilters = (eventId, { eventPayload } = {}) => {
   const checkEventPayload = eventPayload || event.loadEvent(folder, eventId)
-  const { filters = [] } = checkEventPayload
-  return filters
+  return checkEventPayload.filters || []
 }
 
 const getFilter = (eventId, filterId, { eventPayload } = {}) => getAllFilters(eventId, { eventPayload })
-  .filter(item => item.id === filterId).shift()
+  .filter(item => item.id === filterId)[0]
 
 
 const filterExists = (eventId, filterId, { eventPayload } = {}) =>
