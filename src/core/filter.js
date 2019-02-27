@@ -6,11 +6,14 @@ import config from '../commands/config'
 
 const folder = 'events'
 
-const getFilter = (eventId, filterId, { eventPayload } = {}) => {
+const getAllFilters = (eventId, { eventPayload } = {}) => {
   const checkEventPayload = eventPayload || event.loadEvent(folder, eventId)
-  const { filters = [] } = checkEventPayload
-  return filters.filter(item => item.id === filterId).shift()
+  return checkEventPayload.filters || []
 }
+
+const getFilter = (eventId, filterId, { eventPayload } = {}) => getAllFilters(eventId, { eventPayload })
+  .filter(item => item.id === filterId)[0]
+
 
 const filterExists = (eventId, filterId, { eventPayload } = {}) =>
   getFilter(eventId, filterId, { eventPayload })
@@ -52,5 +55,6 @@ export default {
   createFile,
   getEventsInFolder,
   filterExists,
+  getAllFilters,
   getFilter,
 }

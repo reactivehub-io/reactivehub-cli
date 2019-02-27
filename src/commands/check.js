@@ -4,9 +4,11 @@ import config from '../core/config'
 import event from '../core/event'
 import messages from '../messages'
 import filter from '../core/filter'
+import actionsCore from '../core/actions'
+
+const validTriggers = ['onSuccess', 'onFailure']
 
 const checkTrigger = (trigger) => {
-  const validTriggers = ['onSuccess', 'onFailure']
   if (!validTriggers.includes(trigger)) {
     messages.error('Inexistent trigger. Please specify a valid trigger.')
     const availableTriggersInfo = validTriggers.map(t => ` ${chalk.blue.bold(`${t}`)}`)
@@ -28,7 +30,7 @@ const testAll = (program) => {
 
 const checkEvent = (eventId) => {
   if (!event.eventExists(eventId)) {
-    messages.error(`${chalk.blue.bold(eventId)} does not exist!`)
+    messages.error(`Event ${chalk.blue.bold(eventId)} does not exist!`)
     return false
   }
   return true
@@ -42,9 +44,19 @@ const checkFilter = (eventId, filterId) => {
   return true
 }
 
+const checkAction = (eventId, filterId, actionId) => {
+  if (!actionsCore.actionExists(eventId, filterId, actionId)) {
+    messages.error(`Action ${chalk.blue.bold(actionId)} does not exist.`)
+    return false
+  }
+  return true
+}
+
 export default {
   checkEvent,
   checkFilter,
   checkTrigger,
+  checkAction,
   testAll,
+  validTriggers,
 }
