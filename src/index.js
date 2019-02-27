@@ -11,11 +11,12 @@ import check from './commands/check'
 import listener from './commands/listener'
 import init from './commands/init'
 import query from './commands/queries'
+import packageJson from '../package.json'
 
 const program = require('commander')
 
 program
-  .version('1.0.0')
+  .version(packageJson.version)
   .description('')
 
 try {
