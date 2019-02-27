@@ -77,8 +77,7 @@ const addActionTrigger = (program) => {
           const eventIds = eventsToBeCalled.map(e => e.eventId)
           messages.success(`Trigger created: ${chalk.blue.bold(eventIds)} will be called ` +
             `under the condition ${chalk.blue.bold(triggerEvent)} ` +
-            `of action action ${chalk.blue.bold(`${actionId}`)} on event ${chalk.blue.bold(`${eventId}:${filterId}`)}.`)
-          // messages.info('Check the action template at the YAML file and replace its ') // TODO add next actions tip pointing to documentation
+            `of action action ${chalk.blue.bold(`${actionId}`)}`)
         }
 
         return created
