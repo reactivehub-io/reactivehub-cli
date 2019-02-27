@@ -6,8 +6,9 @@ import messages from '../messages'
 import filter from '../core/filter'
 import actionsCore from '../core/actions'
 
+const validTriggers = ['onSuccess', 'onFailure']
+
 const checkTrigger = (trigger) => {
-  const validTriggers = ['onSuccess', 'onFailure']
   if (!validTriggers.includes(trigger)) {
     messages.error('Inexistent trigger. Please specify a valid trigger.')
     const availableTriggersInfo = validTriggers.map(t => ` ${chalk.blue.bold(`${t}`)}`)
@@ -57,4 +58,5 @@ export default {
   checkTrigger,
   checkAction,
   testAll,
+  validTriggers,
 }

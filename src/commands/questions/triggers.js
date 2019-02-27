@@ -1,10 +1,10 @@
 import checks from '../check'
 
 const enterTriggerEvent = {
-  type: 'input',
+  type: 'list',
   name: 'id',
-  message: 'Please enter a trigger event:',
-  validate: input => !input || checks.checkTrigger(input),
+  message: 'Please enter a type of trigger event:',
+  choices: checks.validTriggers,
 }
 
 const enterEventId = {

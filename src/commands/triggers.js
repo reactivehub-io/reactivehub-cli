@@ -20,7 +20,7 @@ const addListener = (program) => {
 }
 
 /* eslint-disable no-param-reassign */
-const checkNullParameters = async (triggerEvent, eventId, filterId, actionId) => {
+const gatherInputParameters = async (triggerEvent, eventId, filterId, actionId) => {
   if (!triggerEvent) {
     ({ id: triggerEvent } = await prompt(questions.enterTriggerEvent))
   }
@@ -44,26 +44,34 @@ const checkNullParameters = async (triggerEvent, eventId, filterId, actionId) =>
   return { triggerEvent, eventId, filterId, actionId }
 }
 
+const isAnyUndefined = (args) => {
+  args.forEach(a => console.log(a))
+  console.log(args.includes(null) )
+  return args.includes(undefined)
+}
+
 /**
  * Adds a trigger (another event) to be called in the case of success or failure of
  * an event action.
  */
 const addActionTrigger = (program) => {
   program
-    .command('add:trigger [_triggerEvent] [_eventId] [_filterId] [_actionId]')
+    .command('add:trigger [triggerEvent] [eventId] [filterId] [actionId]')
     .description('Add a new trigger to an action')
-    .action(async (_triggerEvent, _eventId, _filterId, _actionId) => {
+    .action(async (triggerEvent, eventId, filterId, actionId) => {
       try {
         config.getConfigurationFile()
+        // const a = [triggerEvent, eventId, filterId, actionId]
 
-        const { triggerEvent, eventId, filterId, actionId } = await checkNullParameters(_triggerEvent, _eventId, _filterId, _actionId)
+        if (isAnyUndefined([triggerEvent, eventId, filterId, actionId])) {
+          ({ triggerEvent, eventId, filterId, actionId } = await gatherInputParameters(triggerEvent, eventId, filterId, actionId))
+        }
 
         if (!checks.checkTrigger(triggerEvent)) return false
         if (!checks.checkEvent(eventId)) return false
         if (!checks.checkFilter(eventId, filterId)) return false
+        if (!checks.checkAction(eventId, filterId, actionId)) return false
 
-        const actionExists = checks.checkAction(eventId, filterId, actionId)
-        if (!actionExists) return false
 
         const eventsToBeCalled = await selectAvailableTriggers({ ignoredEvents: [eventId] })
 
