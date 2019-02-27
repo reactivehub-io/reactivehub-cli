@@ -3,6 +3,7 @@ import config from '../core/config'
 import listeners from '../core/listener'
 import messages from '../messages'
 import actionsCore from '../core/actions'
+import filter from '../core/filter'
 import prompt from '../libs/inquirer'
 import checks from './check'
 import questions from './questions/triggers'
@@ -31,7 +32,7 @@ const gatherInputParameters = async (triggerEvent, eventId, filterId, actionId) 
 
   if (!filterId) {
     const filterIdQuestion = questions.enterFilterId
-    filterIdQuestion.validate = input => !input || checks.checkFilter(eventId, input);
+    filterIdQuestion.choices = filter.getAllFilters(eventId);
     ({ id: filterId } = await prompt(filterIdQuestion))
   }
 

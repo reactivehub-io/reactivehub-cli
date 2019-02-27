@@ -12,19 +12,21 @@ const enterEventId = {
   type: 'list',
   name: 'id',
   message: 'Please choose the event id related to the trigger:',
-  choices: event.getEventsInFolder(),
+  choices: event.getEventsInFolder,
 }
 
 const enterFilterId = {
-  type: 'input',
+  type: 'list',
   name: 'id',
-  message: 'Please enter a valid filter id:',
+  message: 'Please choose the filter related to the trigger:',
+  choices: undefined, // depends on eventId option
 }
 
 const enterActionId = {
-  type: 'input',
+  type: 'list',
   name: 'id',
   message: 'Please enter a valid action id:',
+  choices: undefined, // depends on filterId option
 }
 
 export default {
