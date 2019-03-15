@@ -1,13 +1,16 @@
-import event from './event'
-import { sendEvent, sendEventFilter, sendListener, sendListenerTrigger, sendQuery } from '../services/api'
+import { sendEvent, sendEventFilter, sendListener, sendListenerTrigger, sendQuery, sendAction, sendDeploy } from '../services/api'
 import auth from './auth'
 import ActionMap from '../actions'
 import * as check from './eventCheck/check'
 import messages from '../messages/checkDeploy'
 import listeners from '../core/listener'
 import queries from './queries'
+import config from '../core/config'
+import yaml from './yaml'
 
-const { loadEvent, getEventsInFolder } = event
+const loadEvent = id => yaml.toJson(config.folders.events(), id)
+const getEventsInFolder = () => yaml.filesInFolder(config.folders.events()).map(item => item.replace('.yaml', ''))
+
 const namespace = auth.getNamespace()
 const actionErrors = []
 
@@ -56,11 +59,11 @@ const deployFilter = async (eventId, filter) => {
   return true
 }
 
-const deployEvent = async (eventName) => {
-  const { id: eventId, eventGroup, name, version, model, filters } = loadEvent('events', eventName)
+const deployEvent = async (eventName, { withMessage = true } = {}) => {
+  const { id: eventId, eventGroup, version, model, filters } = loadEvent(eventName)
   const payload = {
     eventId,
-    name,
+    name: eventId,
     eventGroup,
     version,
     model,
@@ -68,9 +71,9 @@ const deployEvent = async (eventName) => {
     namespace,
   }
 
-  await sendEvent(payload).then(() => messages.eventDeploySuccess(`${eventId}`))
+  await sendEvent(payload).then(() => withMessage && messages.eventDeploySuccess(`${eventId}`))
 
-  const filterPromises = filters.map(filter => deployFilter(eventId, filter))
+  const filterPromises = filters.map(filter => deployFilter(eventId, filter, { withMessage }))
 
   await Promise.all(filterPromises)
 }
@@ -83,6 +86,7 @@ const deployEvents = async () => {
     const deployPromises = events.map(eventModel => deployEvent(eventModel))
     await Promise.all(deployPromises)
     messages.deployFinished(events.length)
+    sendDeploy({ command: 'deploy:event' })
     return true
   }
   return false
@@ -100,6 +104,7 @@ const deployListener = async () => {
     messages.listenerDeploySuccess(`${serviceAccountId}.${listener}`)
   })
   await Promise.all(deployStatus)
+  sendDeploy({ command: 'deploy:listener' })
   messages.deployFinished(deployActions.length, 'listeners')
 }
 
@@ -112,6 +117,7 @@ const deployQuery = async () => {
     fileMap.forEach(({ dir, files }) => files.forEach(file => deployActions.push(queries.prepareDeploy(dir, file, namespace))))
     const deployStatus = deployActions.map(async item => sendQuery(item).then(() => messages.eventDeploySuccess(item.id, 'Query')))
     await Promise.all(deployStatus)
+    sendDeploy({ command: 'deploy:query' })
     messages.deployFinished(deployActions.length, 'queries')
   } catch (e) {
     messages.queryErrors()
@@ -119,6 +125,7 @@ const deployQuery = async () => {
 }
 
 const deployAll = async () => {
+  sendDeploy({ command: 'deploy:all' })
   await deployEvents()
   await deployListener()
   await deployQuery()
@@ -129,4 +136,5 @@ export default {
   deployListener,
   deployEvents,
   deployQuery,
+  deployEvent,
 }

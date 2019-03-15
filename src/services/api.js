@@ -3,6 +3,7 @@ import auth from '../core/auth'
 import { paths, eventTypes } from './apiConfig'
 
 const namespace = auth.getNamespace()
+const loggedEmail = auth.getEmail()
 /**
  * @typedef ServiceReturn
  * @property {Boolean} status
@@ -15,7 +16,7 @@ const sendPost = async (url, payload) => {
   return axios.post(url, payload, { headers })
     .then(r => r.data)
     .catch((err) => {
-      console.error(err.response.data)
+      console.error(err.response)
       return err.response.data
     })
 }
@@ -102,4 +103,33 @@ export const getEventModel = (eventId) => {
   const params = `?namespace=${namespace}&eventId=${eventId}`
   const url = paths.namedQuery('get-event-model', params)
   return doGet(url).then(({ data = [] }) => data.shift().model)
+}
+
+export const sendLoginCommand = ({ namespace: team, code, email }) => {
+  const payload = {
+    namespace: team, code, email, date: new Date().toISOString(),
+  }
+  return sendPost(paths.event(eventTypes.CLI_LOGIN), payload).catch(() => true)
+}
+
+export const sendAddEventCommand = ({ id }) => {
+  const payload = {
+    namespace, email: loggedEmail, id, date: new Date().toISOString(),
+  }
+  return sendPost(paths.event(eventTypes.CLI_ADD_EVENT), payload).catch(() => true)
+}
+
+export const sendActionCommand = ({ id, eventId, type, action }) => {
+  const payload = {
+    id, eventId, type, action, namespace, date: new Date().toISOString(),
+  }
+  return sendPost(paths.event(eventTypes.CLI_ADD_ACTION), payload).catch(() => true)
+}
+
+
+export const sendDeploy = ({ command }) => {
+  const payload = {
+    command, namespace, email: loggedEmail, date: new Date().toISOString(),
+  }
+  return sendPost(paths.event(eventTypes.CLI_DEPLOY), payload).catch(() => true)
 }
