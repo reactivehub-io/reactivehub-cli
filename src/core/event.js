@@ -2,6 +2,8 @@ import { flatten, unflatten } from 'flat'
 import chalk from 'chalk'
 import yaml from './yaml'
 import messages from '../messages'
+import { sendAddEventCommand } from '../services/api'
+import deploy from './deploy'
 
 const folder = 'events'
 const eventExists = eventId => yaml.fileExists(folder, eventId)
@@ -37,6 +39,8 @@ const createFile = (payload, { withExample = false, override = false } = {}) => 
   const created = yaml.create(folder, fileName, newPayload)
   if (created) messages.success(`${chalk.blue.bold(fileName)} successfully created!`)
 
+  sendAddEventCommand({ id })
+  deploy.deployEvent(newPayload.id, { withMessage: true })
   return created
 }
 

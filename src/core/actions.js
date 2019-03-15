@@ -4,9 +4,11 @@ import messages from '../messages'
 import filter from '../core/filter'
 import event from '../core/event'
 import yaml from './yaml'
+import { sendActionCommand } from '../services/api'
+import config from './config'
 
 const { getFilter } = filter
-const folder = 'events'
+const folder = config.folders.events()
 
 const getActions = (eventId, filterId) => getFilter(eventId, filterId).actions || []
 
@@ -29,7 +31,7 @@ const appendTrigger = (action, triggerEvent, triggerModels) => {
 }
 
 const createAction = (params) => {
-  const { eventId, filterId, id: actionId } = params
+  const { eventId, filterId, id: actionId, type, action: actionType } = params
   const actionPayload = params
   delete actionPayload.eventId
   delete actionPayload.filterId
@@ -59,6 +61,8 @@ const createAction = (params) => {
     messages.success(`Action ${chalk.blue.bold(actionId)} on event ${chalk.blue.bold(`${eventId}:${filterId}`)} successfully created!`)
     messages.info('Check the action template at the YAML file and replace its properties with the event model parameters (wildcards allowed). Check the documentation for more info https://docs.reactivehub.io/guide/events/actions#wildcards')
   }
+
+  sendActionCommand({ id: actionId, eventId, type, action: actionType })
 
   return created
 }

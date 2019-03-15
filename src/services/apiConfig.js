@@ -26,4 +26,8 @@ export const eventTypes = {
   NEW_LISTENER: 'new-listener',
   NEW_LISTENER_TRIGGER: 'new-listener-trigger',
   NAMED_QUERY: 'named-query',
+  CLI_LOGIN: 'cli.login',
+  CLI_ADD_EVENT: 'cli.add-event',
+  CLI_ADD_ACTION: 'cli.add-action',
+  CLI_DEPLOY: 'cli.deploy',
 }

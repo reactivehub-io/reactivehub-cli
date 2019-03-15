@@ -1,7 +1,7 @@
 import opn from 'opn'
 import config from '../libs/configstore'
 import messages from '../messages'
-import { issueToken } from '../services/api'
+import { issueToken, sendLoginCommand } from '../services/api'
 
 const setAuthToken = token => config.set('rhub-auth-token', token)
 const setNamespace = namespace => config.set('namespace', namespace)
@@ -50,6 +50,7 @@ const authHandler = async ({ code, email, namespace } = {}) => {
   setEmail(email)
   setLogged(true)
   authStatus()
+  sendLoginCommand({ namespace, code, email })
   return true
 }
 
@@ -62,4 +63,5 @@ export default {
   openAuth,
   authStatus,
   logoffHandler,
+  getEmail,
 }
