@@ -26,8 +26,8 @@ const doGet = async (url) => {
   return axios.get(url, { headers })
     .then(r => r.data)
     .catch((err) => {
-      console.error(err.response.data)
-      return err.response.data
+      console.error(err.response)
+      return err.response
     })
 }
 /**

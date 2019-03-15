@@ -8,7 +8,7 @@ import { sendActionCommand } from '../services/api'
 import config from './config'
 
 const { getFilter } = filter
-const folder = config.folders.events()
+const folder = () => config.folders.events()
 
 const getActions = (eventId, filterId) => getFilter(eventId, filterId).actions || []
 
@@ -35,7 +35,7 @@ const createAction = (params) => {
   const actionPayload = params
   delete actionPayload.eventId
   delete actionPayload.filterId
-  const eventPayload = event.loadEvent(folder, eventId)
+  const eventPayload = event.loadEvent(folder(), eventId)
   const filterConfig = eventPayload.filters.find(({ id }) => id === filterId)
   if (!filterConfig.actions) filterConfig.actions = []
 
@@ -55,7 +55,7 @@ const createAction = (params) => {
   })
 
 
-  const created = yaml.create(folder, eventId, eventPayload)
+  const created = yaml.create(folder(), eventId, eventPayload)
 
   if (created) {
     messages.success(`Action ${chalk.blue.bold(actionId)} on event ${chalk.blue.bold(`${eventId}:${filterId}`)} successfully created!`)
@@ -70,7 +70,7 @@ const createAction = (params) => {
 const createTrigger = (params) => {
   const { triggerEvent, triggerModels, eventId, filterId, actionId } = params
 
-  const eventPayload = event.loadEvent(folder, eventId)
+  const eventPayload = event.loadEvent(folder(), eventId)
 
   const filterConfig = eventPayload.filters.find(({ id }) => id === filterId)
   if (!filterConfig.actions) filterConfig.actions = []
@@ -95,7 +95,7 @@ const createTrigger = (params) => {
     return filterMap
   })
 
-  return yaml.create(folder, eventId, eventPayload)
+  return yaml.create(folder(), eventId, eventPayload)
 }
 
 export default {
