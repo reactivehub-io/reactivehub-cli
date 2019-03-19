@@ -39,6 +39,14 @@ const logoffHandler = async () => {
   return false
 }
 
+const sendLoginEvent = async ({ namespace, code, email, token, retry = 0 }) =>
+  sendLoginCommand({ namespace, code, email, token })
+    .catch(() => {
+      const newRetry = retry + 1
+      if (newRetry <= 5) return sendLoginEvent({ namespace, code, email, retry: newRetry })
+      return false
+    })
+
 const authHandler = async ({ code, email, namespace } = {}) => {
   const { token, message } = await issueToken({ code, namespace, email })
   if (message) {
@@ -50,7 +58,7 @@ const authHandler = async ({ code, email, namespace } = {}) => {
   setEmail(email)
   setLogged(true)
   authStatus()
-  sendLoginCommand({ namespace, code, email })
+  await sendLoginEvent({ namespace, code, email, token })
   return true
 }
 

@@ -11,8 +11,9 @@ const loggedEmail = auth.getEmail()
  */
 const bearer = auth.getAuthToken() && `Bearer ${auth.getAuthToken()}`
 
-const sendPost = async (url, payload) => {
-  const headers = bearer ? { Authorization: bearer } : {}
+const sendPost = async (url, payload, { token }) => {
+  const Authorization = (token && `Bearer ${token}`) || bearer
+  const headers = bearer ? { Authorization } : {}
   return axios.post(url, payload, { headers })
     .then(r => r.data)
     .catch((err) => {
@@ -105,11 +106,11 @@ export const getEventModel = (eventId) => {
   return doGet(url).then(({ data = [] }) => data.shift().model)
 }
 
-export const sendLoginCommand = ({ namespace: team, code, email }) => {
+export const sendLoginCommand = ({ namespace: team, code, email, token }) => {
   const payload = {
     namespace: team, code, email, date: new Date().toISOString(),
   }
-  return sendPost(paths.event(eventTypes.CLI_LOGIN), payload).catch(() => true)
+  return sendPost(paths.event(eventTypes.CLI_LOGIN), payload, { token }).catch(() => true)
 }
 
 export const sendAddEventCommand = ({ id }) => {
