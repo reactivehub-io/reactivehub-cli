@@ -11,7 +11,7 @@ const loggedEmail = auth.getEmail()
  */
 const bearer = auth.getAuthToken() && `Bearer ${auth.getAuthToken()}`
 
-const sendPost = async (url, payload, { token }) => {
+const sendPost = async (url, payload, { token } = {}) => {
   const Authorization = (token && `Bearer ${token}`) || bearer
   const headers = bearer ? { Authorization } : {}
   return axios.post(url, payload, { headers })
