@@ -16,10 +16,7 @@ const sendPost = async (url, payload, { token } = {}) => {
   const headers = bearer ? { Authorization } : {}
   return axios.post(url, payload, { headers })
     .then(r => r.data)
-    .catch((err) => {
-      console.error(err.response)
-      return err.response.data
-    })
+    .catch(({ response: { data } } = {}) => data)
 }
 
 const doGet = async (url) => {
