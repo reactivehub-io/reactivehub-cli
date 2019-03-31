@@ -4,7 +4,7 @@ import auth from '../core/auth'
 import messages from '../messages'
 import questions from './questions/login'
 
-const authUrl = 'https://console.reactivehub.io/api-token/cli-auth'
+const authUrl = 'https://console.reactivehub.io/cli/setup/auth'
 
 const buildSeparatorString = s => ''.padStart(s, '-')
 
@@ -13,17 +13,9 @@ const basicLogin = (program) => {
     .command('login')
     .description('Log in to Reactivehub')
     .action(async () => {
-      const { doRedirect } = await prompt(questions.preLogin)
-      if (!doRedirect) {
-        const message = 'Login aborted by the user.'
+      const { haveCode } = await prompt(questions.preLogin)
 
-        messages.error(buildSeparatorString(message.length, '-'))
-        messages.error(message)
-        messages.error(buildSeparatorString(message.length, '-'))
-        return false
-      }
-
-      opn(authUrl)
+      if (!haveCode) opn(authUrl)
 
       messages.info('')
       messages.info('Copy your authorization code:')

@@ -23,8 +23,8 @@ const authQuestions = [
 const preLogin = [
   {
     type: 'confirm',
-    name: 'doRedirect',
-    message: 'You will be redirected to the cli authorization page. Confirm?',
+    name: 'haveCode',
+    message: 'Do you already have the authorization code?',
   },
 ]
 
