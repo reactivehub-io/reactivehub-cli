@@ -43,7 +43,7 @@ const sendLoginEvent = async ({ namespace, code, email, token, retry = 0 }) =>
   sendLoginCommand({ namespace, code, email, token })
     .catch(() => {
       const newRetry = retry + 1
-      if (newRetry <= 5) return sendLoginEvent({ namespace, code, email, retry: newRetry })
+      if (newRetry <= 5) return sendLoginEvent({ namespace, code, email, token, retry: newRetry })
       return false
     })
 

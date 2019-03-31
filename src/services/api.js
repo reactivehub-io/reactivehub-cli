@@ -13,7 +13,7 @@ const bearer = auth.getAuthToken() && `Bearer ${auth.getAuthToken()}`
 
 const sendPost = async (url, payload, { token } = {}) => {
   const Authorization = (token && `Bearer ${token}`) || bearer
-  const headers = bearer ? { Authorization } : {}
+  const headers = Authorization ? { Authorization } : {}
   return axios.post(url, payload, { headers })
     .then(r => r.data)
     .catch(({ response: { data } } = {}) => data)
@@ -24,7 +24,6 @@ const doGet = async (url) => {
   return axios.get(url, { headers })
     .then(r => r.data)
     .catch((err) => {
-      console.error(err.response)
       return err.response
     })
 }
@@ -107,7 +106,7 @@ export const sendLoginCommand = ({ namespace: team, code, email, token }) => {
   const payload = {
     namespace: team, code, email, date: new Date().toISOString(),
   }
-  return sendPost(paths.event(eventTypes.CLI_LOGIN), payload, { token }).catch(() => true)
+  return sendPost(paths.event(eventTypes.CLI_LOGIN), payload, { token }).catch(() => false)
 }
 
 export const sendAddEventCommand = ({ id }) => {
