@@ -16,16 +16,14 @@ const sendPost = async (url, payload, { token } = {}) => {
   const headers = Authorization ? { Authorization } : {}
   return axios.post(url, payload, { headers })
     .then(r => r.data)
-    .catch(({ response: { data } } = {}) => data)
+    .catch(({ response: { data } = {} } = {}) => data)
 }
 
 const doGet = async (url) => {
   const headers = bearer ? { Authorization: bearer } : {}
   return axios.get(url, { headers })
     .then(r => r.data)
-    .catch((err) => {
-      return err.response
-    })
+    .catch(err => err.response)
 }
 /**
  * @param {*} payload
@@ -52,7 +50,7 @@ export const issueToken = async payload => sendPost(paths.cli(eventTypes.ISSUE_C
  * @param {*} param1
  * @returns {Promise.<ServiceReturn>}
  */
-export const sendAction = async (eventInfo, { id, serviceAccountId, serviceAction, template } = {}) => {
+export const sendAction = async (eventInfo, { id, serviceAccountId, serviceAction, template, onSuccess, onFailure } = {}) => {
   const payload = {
     ...eventInfo,
     action: {
@@ -62,8 +60,11 @@ export const sendAction = async (eventInfo, { id, serviceAccountId, serviceActio
       serviceAction,
       config: template,
     },
+    onSuccess,
+    onFailure,
   }
-  return sendPost(paths.event(eventTypes.ADD_ACTION_RULE), payload)
+  const messagePayload = await sendPost(paths.event(eventTypes.ADD_ACTION_RULE), payload)
+  return messagePayload
 }
 
 export const getServiceAccounts = (type) => {

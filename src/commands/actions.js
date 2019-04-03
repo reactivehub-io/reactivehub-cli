@@ -85,6 +85,7 @@ const addAction = (program) => {
           { id: actionId, eventId, filterId, type, action, serviceAccountId, async },
         )
       } catch (e) {
+        console.error('AN ERROR HAS OCURRED', e)
         return false
       }
     })
