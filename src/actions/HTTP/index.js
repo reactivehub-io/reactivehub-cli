@@ -20,6 +20,28 @@ const postPutTemplate = (answers = {}, eventModel = {}) => {
   return template
 }
 
+const getTemplate = (answers = {}, eventModel = {}) => {
+  const { hasHeaders = false } = answers
+  const template = {
+    path: '/',
+  }
+  if (hasHeaders) {
+    template.headers = {
+      headerKey: 'headerValue',
+    }
+  }
+  template.query = eventModel
+  return template
+}
+
+const GET = {
+  name: 'GET',
+  processor: 'GET',
+  deploy: (action, eventInfo) => sendAction(eventInfo, { serviceAction: 'GET', ...action }),
+  buildTemplate: getTemplate,
+  questions: () => [hasAdditionalHeadersQuestion],
+}
+
 const POST = {
   name: 'POST',
   processor: 'POST',
@@ -55,6 +77,7 @@ const DELETE = {
 }
 
 export default {
+  GET,
   POST,
   PUT,
   DELETE,
