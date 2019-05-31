@@ -50,7 +50,7 @@ export const issueToken = async payload => sendPost(paths.cli(eventTypes.ISSUE_C
  * @param {*} param1
  * @returns {Promise.<ServiceReturn>}
  */
-export const sendAction = async (eventInfo, { id, serviceAccountId, serviceAction, template, onSuccess, onFailure } = {}) => {
+export const sendAction = async (eventInfo, { id, serviceAccountId, serviceAction, template = {}, onSuccess, onFailure } = {}) => {
   const payload = {
     ...eventInfo,
     action: {
@@ -65,10 +65,10 @@ export const sendAction = async (eventInfo, { id, serviceAccountId, serviceActio
   }
   const messagePayload = await sendPost(paths.event(eventTypes.ADD_ACTION_RULE), payload)
   if (id === 'create-grow-plan-stripe') {
-    console.log('create-grow-plan-stripe')
+    /* console.log('create-grow-plan-stripe')
     console.log(payload)
     const u = require('util')
-    console.log(u.inspect(messagePayload, false, null))
+    console.log(u.inspect(messagePayload, false, null)) */
   }
   return messagePayload
 }
