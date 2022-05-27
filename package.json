@@ -34,7 +34,7 @@
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.13.0",
     "flat": "^4.1.0",
-    "fs-extra": "^7.0.0",
+    "fs-extra": "^8.0.0",
     "inquirer": "^6.2.0",
     "inquirer-autocomplete-prompt": "^1.0.1",
     "lodash": "^4.17.11",
